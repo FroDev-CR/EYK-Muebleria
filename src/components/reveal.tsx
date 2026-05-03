@@ -84,7 +84,7 @@ export function Reveal({
 
   return (
     <Tag
-      ref={ref}
+      ref={ref as any}
       className={[
         "transition-all duration-[800ms] ease-out-quart will-change-transform",
         shown ? v.to : v.from,

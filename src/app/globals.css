@@ -1,0 +1,245 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ======================================================================
+   EYK Mueblería · Sistema de diseño
+   Tono: editorial cálido. Madera, lino, mañana de domingo en San José.
+   ====================================================================== */
+
+:root {
+  /* === Color (OKLCH, neutros tintados hacia el marrón nuez) === */
+  --color-bone: oklch(0.97 0.008 75);
+  --color-bone-2: oklch(0.94 0.010 75);
+  --color-bone-3: oklch(0.90 0.012 70);
+  --color-line: oklch(0.85 0.014 70);
+  --color-line-strong: oklch(0.74 0.020 65);
+
+  --color-ink: oklch(0.22 0.020 55);
+  --color-ink-2: oklch(0.34 0.022 55);
+  --color-ink-muted: oklch(0.50 0.024 60);
+  --color-ink-subtle: oklch(0.65 0.022 65);
+
+  --color-walnut: oklch(0.36 0.055 45);
+  --color-walnut-deep: oklch(0.26 0.045 45);
+  --color-clay: oklch(0.58 0.105 40);
+  --color-clay-soft: oklch(0.78 0.055 50);
+  --color-sage: oklch(0.62 0.045 130);
+
+  /* Estado / mensajes */
+  --color-error: oklch(0.55 0.16 25);
+  --color-success: oklch(0.55 0.12 145);
+
+  /* === Tipografía (variables de fuente cargadas en layout.tsx) === */
+  --font-display: var(--font-spectral), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-manrope), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
+
+  /* === Espaciado (4pt scale, semantic) === */
+  --spacing-edge: clamp(1rem, 4vw, 2.5rem);
+  --spacing-section: clamp(3rem, 8vw, 6rem);
+
+  /* === Animation === */
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* === Base === */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: var(--color-bone);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-feature-settings: "ss01", "cv11";
+    line-height: 1.55;
+    font-size: 1rem;
+  }
+
+  ::selection {
+    background: var(--color-walnut);
+    color: var(--color-bone);
+  }
+
+  ::-moz-selection {
+    background: var(--color-walnut);
+    color: var(--color-bone);
+  }
+
+  /* Headings: Spectral display */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+
+  /* Focus visible: cálido, no azul de sistema */
+  :focus-visible {
+    outline: 2px solid var(--color-walnut);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Reducir movimiento si el usuario lo pidió */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* === Components / utilities === */
+@layer components {
+  .container-edge {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: var(--spacing-edge);
+    max-width: 84rem;
+  }
+
+  .display-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* Eyebrow (label superior con asterisco-acento, detalle editorial) */
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-walnut);
+  }
+
+  /* Botón primario — un solo CTA primario por pantalla */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.5rem;
+    background: var(--color-ink);
+    color: var(--color-bone);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    border-radius: 999px;
+    transition: transform 0.18s var(--ease-out-quart),
+      background-color 0.18s var(--ease-out-quart);
+    min-height: 44px;
+  }
+  .btn-primary:hover {
+    background: var(--color-walnut-deep);
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: transparent;
+    color: var(--color-ink);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 999px;
+    transition: background-color 0.18s var(--ease-out-quart);
+    min-height: 44px;
+  }
+  .btn-secondary:hover {
+    background: var(--color-bone-2);
+  }
+
+  .link-underline {
+    position: relative;
+    color: var(--color-ink);
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s var(--ease-out-quart);
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* === Animaciones === */
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-rise {
+  animation: fade-rise 0.6s var(--ease-out-quart) both;
+}
+
+.stagger > * {
+  opacity: 0;
+  animation: fade-rise 0.5s var(--ease-out-quart) forwards;
+}
+.stagger > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.stagger > *:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.stagger > *:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.stagger > *:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.stagger > *:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.stagger > *:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.stagger > *:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.stagger > *:nth-child(8) {
+  animation-delay: 0.4s;
+}

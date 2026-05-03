@@ -83,7 +83,6 @@ export function Reveal({
   const v = VARIANT_CLASSES[variant];
 
   return (
-    // @ts-expect-error — dynamic tag
     <Tag
       ref={ref}
       className={[

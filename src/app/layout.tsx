@@ -4,6 +4,7 @@ import "./globals.css";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { WhatsAppFloat } from "@/components/whatsapp-button";
+import { LangProvider } from "@/contexts/lang-context";
 
 const spectral = Spectral({
   subsets: ["latin"],
@@ -44,10 +45,12 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${spectral.variable} ${manrope.variable}`}>
       <body>
-        <Nav />
-        <main id="contenido">{children}</main>
-        <Footer />
-        <WhatsAppFloat />
+        <LangProvider>
+          <Nav />
+          <main id="contenido">{children}</main>
+          <Footer />
+          <WhatsAppFloat />
+        </LangProvider>
       </body>
     </html>
   );

@@ -4,31 +4,33 @@
 
 /* ======================================================================
    EYK Mueblería · Sistema de diseño
-   Tono: editorial cálido. Madera, lino, mañana de domingo en San José.
+   Naranja #FB531F + Negro #000000
    ====================================================================== */
 
 :root {
-  /* === Color (OKLCH, neutros tintados hacia el marrón nuez) === */
-  --color-bone: oklch(0.97 0.008 75);
-  --color-bone-2: oklch(0.94 0.010 75);
-  --color-bone-3: oklch(0.90 0.012 70);
-  --color-line: oklch(0.85 0.014 70);
-  --color-line-strong: oklch(0.74 0.020 65);
+  /* === Fondos y superficies === */
+  --color-bone: #ffffff;
+  --color-bone-2: #f8f8f8;
+  --color-bone-3: #f1f1f1;
+  --color-line: #e5e5e5;
+  --color-line-strong: #cccccc;
 
-  --color-ink: oklch(0.22 0.020 55);
-  --color-ink-2: oklch(0.34 0.022 55);
-  --color-ink-muted: oklch(0.50 0.024 60);
-  --color-ink-subtle: oklch(0.65 0.022 65);
+  /* === Texto === */
+  --color-ink: #111111;
+  --color-ink-2: #333333;
+  --color-ink-muted: #666666;
+  --color-ink-subtle: #999999;
 
-  --color-walnut: oklch(0.36 0.055 45);
-  --color-walnut-deep: oklch(0.26 0.045 45);
-  --color-clay: oklch(0.58 0.105 40);
-  --color-clay-soft: oklch(0.78 0.055 50);
-  --color-sage: oklch(0.62 0.045 130);
+  /* === Naranja EYK (acento primario) === */
+  --color-walnut: #FB531F;
+  --color-walnut-deep: #d43e0a;
+  --color-clay: #FB531F;
+  --color-clay-soft: #fde3d9;
+  --color-sage: #777777;
 
   /* Estado / mensajes */
-  --color-error: oklch(0.55 0.16 25);
-  --color-success: oklch(0.55 0.12 145);
+  --color-error: #dc2626;
+  --color-success: #16a34a;
 
   /* === Tipografía (variables de fuente cargadas en layout.tsx) === */
   --font-display: var(--font-spectral), Georgia, "Times New Roman", serif;
@@ -42,6 +44,22 @@
   /* === Animation === */
   --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* === Modo oscuro === */
+.dark {
+  /* === Fondos y superficies === */
+  --color-bone: #ffffff;
+  --color-bone-2: #f5f5f5;
+  --color-bone-3: #eeeeee;
+  --color-line: #e0e0e0;
+  --color-line-strong: #d0d0d0;
+
+  /* === Texto === */
+  --color-ink: #000000;
+  --color-ink-2: #222222;
+  --color-ink-muted: #555555;
+  --color-ink-subtle: #777777;
 }
 
 /* === Base === */
@@ -70,12 +88,12 @@
 
   ::selection {
     background: var(--color-walnut);
-    color: var(--color-bone);
+    color: #ffffff;
   }
 
   ::-moz-selection {
     background: var(--color-walnut);
-    color: var(--color-bone);
+    color: #ffffff;
   }
 
   /* Headings: Spectral display */
@@ -137,15 +155,15 @@
     color: var(--color-walnut);
   }
 
-  /* Botón primario — un solo CTA primario por pantalla */
+  /* Botón primario — naranja EYK */
   .btn-primary {
     display: inline-flex;
     align-items: center;
     gap: 0.625rem;
     padding: 0.875rem 1.5rem;
-    background: var(--color-ink);
-    color: var(--color-bone);
-    font-weight: 500;
+    background: var(--color-walnut);
+    color: #ffffff;
+    font-weight: 600;
     font-size: 0.9375rem;
     border-radius: 999px;
     transition: transform 0.18s var(--ease-out-quart),
@@ -159,6 +177,28 @@
     transform: scale(0.98);
   }
 
+  /* Botón negro (secundario oscuro) */
+  .btn-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.5rem;
+    background: #111111;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    border-radius: 999px;
+    transition: transform 0.18s var(--ease-out-quart),
+      background-color 0.18s var(--ease-out-quart);
+    min-height: 44px;
+  }
+  .btn-dark:hover {
+    background: #000000;
+  }
+  .btn-dark:active {
+    transform: scale(0.98);
+  }
+
   .btn-secondary {
     display: inline-flex;
     align-items: center;
@@ -168,13 +208,36 @@
     color: var(--color-ink);
     font-weight: 500;
     font-size: 0.9375rem;
-    border: 1px solid var(--color-line-strong);
+    border: 1.5px solid var(--color-ink);
     border-radius: 999px;
-    transition: background-color 0.18s var(--ease-out-quart);
+    transition: background-color 0.18s var(--ease-out-quart),
+      color 0.18s var(--ease-out-quart),
+      border-color 0.18s var(--ease-out-quart);
     min-height: 44px;
   }
   .btn-secondary:hover {
-    background: var(--color-bone-2);
+    background: var(--color-ink);
+    color: #ffffff;
+  }
+
+  /* Marca de agua CSS en imágenes de productos */
+  .product-watermark {
+    position: relative;
+  }
+  .product-watermark::after {
+    content: "EYK Mueblería";
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    font-family: var(--font-body);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+    user-select: none;
+    z-index: 2;
   }
 
   .link-underline {

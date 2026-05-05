@@ -1,8 +1,3 @@
-/**
- * Catálogo EYK Mueblería — modelo de datos.
- * Las categorías se mapean al PDF original (20 páginas).
- */
-
 export type CategoryId =
   | "salas"
   | "esquineros"
@@ -12,7 +7,6 @@ export type CategoryId =
   | "camas"
   | "comedores"
   | "madera"
-  | "coquetas"
   | "camillas";
 
 export type CategoryGroup = "salas" | "comedores" | "camas" | "madera" | "otros";
@@ -77,7 +71,7 @@ export const CATEGORIES: Category[] = [
     label: "Comedores · Desayunadores",
     short: "Comedores",
     description:
-      "Comedores de 4 y 6 sillas, desayunadores de 4 bancos, mesas en madera Pino, Laurel o Cenízaro con sobres en vidrio o porcelanato.",
+      "Comedores de 4 y 6 sillas, desayunadores de 4 bancos. Mesas en madera Pino, Laurel, Cedro o Cenízaro con sobres en vidrio o porcelanato.",
     customizable: "Tono de madera · Tipo de sobre · Tela y color de silla",
   },
   {
@@ -95,16 +89,8 @@ export const CATEGORIES: Category[] = [
     label: "Madera Varios",
     short: "Madera",
     description:
-      "Mesas de noche, gaveteros, recibidores, cómodas, trasteros y bases. Madera Pino, Laurel o Cenízaro.",
+      "Mesas de noche, gaveteros, recibidores, cómodas, trasteros y bases. Madera Pino, Laurel, Cedro o Cenízaro.",
     customizable: "Medidas · Tono de madera",
-  },
-  {
-    id: "coquetas",
-    group: "madera",
-    label: "Coquetas · Vanity",
-    short: "Coquetas",
-    description: "Coquetas y vanities a la medida.",
-    customizable: "Diseño de referencia",
   },
   {
     id: "camillas",
@@ -135,10 +121,38 @@ export const CATEGORY_GROUPS: { id: CategoryGroup; label: string; description: s
   {
     id: "madera",
     label: "Muebles en madera",
-    description: "Recibidores, gaveteros, mesas, coquetas y cómodas.",
+    description: "Recibidores, gaveteros, mesas y cómodas.",
   },
 ];
 
+// ── Telas disponibles ────────────────────────────────────────────────────────
+export interface FabricOption {
+  id: string;
+  name: string;
+  hex: string;      // color representativo para el swatch
+  available: boolean;
+}
+
+export const FABRICS: FabricOption[] = [
+  { id: "beige",        name: "Beige / Arena",     hex: "#d4bc98", available: true },
+  { id: "gris-claro",   name: "Gris Claro",         hex: "#c8c8c8", available: true },
+  { id: "gris-medio",   name: "Gris Medio",         hex: "#8a8a8a", available: true },
+  { id: "gris-oscuro",  name: "Gris Oscuro",        hex: "#4a4a4a", available: true },
+  { id: "negro",        name: "Negro",              hex: "#1a1a1a", available: true },
+  { id: "blanco-hueso", name: "Blanco Hueso",       hex: "#f0ead8", available: true },
+  { id: "cafe",         name: "Café / Chocolate",   hex: "#6b3f1e", available: true },
+  { id: "camel",        name: "Camel / Mostaza",    hex: "#c8944a", available: true },
+  { id: "azul-marino",  name: "Azul Marino",        hex: "#1e3a5f", available: true },
+  { id: "verde-oliva",  name: "Verde Oliva",        hex: "#5c6b3a", available: true },
+  { id: "vino",         name: "Vino / Burgundy",    hex: "#6b1a2a", available: true },
+  { id: "terracota",    name: "Terracota",           hex: "#c4622d", available: true },
+];
+
+// ── Maderas disponibles ──────────────────────────────────────────────────────
+export const WOOD_TYPES = ["Pino", "Laurel", "Cedro", "Cenízaro"] as const;
+export type WoodType = (typeof WOOD_TYPES)[number];
+
+// ── Contacto ─────────────────────────────────────────────────────────────────
 export const CONTACT = {
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP || "50688887777",
   phone: process.env.NEXT_PUBLIC_PHONE || "+506 8888 7777",

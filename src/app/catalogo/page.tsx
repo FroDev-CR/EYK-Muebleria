@@ -111,6 +111,30 @@ export default async function CatalogoPage(props: {
                 </Reveal>
               ))}
             </div>
+
+            {/* Botón catálogo PDF */}
+            <Reveal delay={200}>
+              <div className="mt-10 pt-8 border-t border-[#e5e5e5] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-sm text-[#666]">
+                  ¿Querés ver más opciones de {section.label.toLowerCase()}?
+                </p>
+                <a
+                  href="/catalaogos/EYK_Catálogo2025.pdf.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[#FB531F] text-[#FB531F] font-semibold text-sm hover:bg-[#FB531F] hover:text-white transition-colors"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10,9 9,9 8,9"/>
+                  </svg>
+                  Ver catálogo completo PDF
+                </a>
+              </div>
+            </Reveal>
           </section>
         ))}
       </div>

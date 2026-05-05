@@ -1,33 +1,41 @@
+"use client";
+
 import Link from "next/link";
 import { CONTACT, CATEGORY_GROUPS } from "@/lib/data";
+import { useLang } from "@/contexts/lang-context";
+import type { CategoryId } from "@/lib/data";
 
 export function Footer() {
+  const { lang, t } = useLang();
+
   return (
-    <footer className="mt-32 border-t border-[var(--color-line)] bg-[var(--color-bone-2)]">
+    <footer className="mt-32 border-t border-[#e5e5e5] bg-[#f8f8f8]">
       <div className="container-edge py-16 md:py-24">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
-            <div className="flex items-baseline gap-2">
-              <span className="font-[family-name:var(--font-display)] text-3xl text-[var(--color-ink)] leading-none">
+            <div className="flex items-center gap-2.5">
+              <div className="bg-[#FB531F] text-white font-bold text-xl px-3 py-1 rounded leading-none">
                 EYK
-              </span>
-              <span className="display-italic text-sm text-[var(--color-ink-muted)]">mueblería</span>
+              </div>
+              <span className="display-italic text-sm text-[#777]">mueblería</span>
             </div>
-            <p className="mt-4 max-w-md text-[var(--color-ink-2)] text-[0.95rem] leading-relaxed">
-              Fabricamos salas, comedores, camas y muebles en madera a la medida. Tela, color y acabados a tu gusto. Cotizamos cualquier diseño de referencia.
+            <p className="mt-4 max-w-md text-[#444] text-[0.95rem] leading-relaxed">
+              {t("footer", "tagline")}
             </p>
           </div>
 
           <div className="md:col-span-3">
-            <h2 className="eyebrow mb-4">Catálogo</h2>
+            <h2 className="text-[0.75rem] font-bold tracking-[0.18em] uppercase text-[#FB531F] mb-4">
+              {t("footer", "catalog")}
+            </h2>
             <ul className="space-y-2.5">
               {CATEGORY_GROUPS.map((g) => (
                 <li key={g.id}>
                   <Link
                     href={`/catalogo?grupo=${g.id}`}
-                    className="text-[var(--color-ink-2)] hover:text-[var(--color-ink)] text-[0.95rem]"
+                    className="text-[#444] hover:text-[#FB531F] text-[0.95rem] transition-colors"
                   >
-                    {g.label}
+                    {t("categories", g.id as CategoryId)}
                   </Link>
                 </li>
               ))}
@@ -35,12 +43,14 @@ export function Footer() {
           </div>
 
           <div className="md:col-span-4">
-            <h2 className="eyebrow mb-4">Contacto</h2>
-            <ul className="space-y-3 text-[0.95rem] text-[var(--color-ink-2)]">
+            <h2 className="text-[0.75rem] font-bold tracking-[0.18em] uppercase text-[#FB531F] mb-4">
+              {t("footer", "contact")}
+            </h2>
+            <ul className="space-y-3 text-[0.95rem] text-[#444]">
               <li>
                 <a
                   href={`https://wa.me/${CONTACT.whatsapp.replace(/\D/g, "")}`}
-                  className="link-underline"
+                  className="hover:text-[#FB531F] transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -48,14 +58,14 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href={`mailto:${CONTACT.email}`} className="link-underline">
+                <a href={`mailto:${CONTACT.email}`} className="hover:text-[#FB531F] transition-colors">
                   {CONTACT.email}
                 </a>
               </li>
               <li>
                 <a
                   href={`https://instagram.com/${CONTACT.instagram}`}
-                  className="link-underline"
+                  className="hover:text-[#FB531F] transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -66,12 +76,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 pt-6 border-t border-[var(--color-line)] flex flex-col md:flex-row gap-4 md:items-end md:justify-between">
-          <p className="text-xs text-[var(--color-ink-subtle)]">
-            © {new Date().getFullYear()} EYK Mueblería. Todos los derechos reservados.
+        <div className="mt-16 pt-6 border-t border-[#e5e5e5] flex flex-col md:flex-row gap-4 md:items-end md:justify-between">
+          <p className="text-xs text-[#999]">
+            © {new Date().getFullYear()} EYK Mueblería. {t("footer", "rights")}
           </p>
-          <p className="display-italic text-sm text-[var(--color-ink-muted)]">
-            Hecho a mano, en Costa Rica.
+          <p className="display-italic text-sm text-[#777]">
+            {t("footer", "handmade")}
           </p>
         </div>
       </div>

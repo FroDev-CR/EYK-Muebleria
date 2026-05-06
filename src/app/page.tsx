@@ -12,13 +12,10 @@ export default async function Home() {
     return { group: g, sample, count: items.length };
   });
 
-  const big = bestSellers[0];
-
   return (
     <HomeContent
       bestSellers={bestSellers}
       previewByGroup={previewByGroup}
-      big={big}
     />
   );
 }

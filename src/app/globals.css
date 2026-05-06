@@ -312,6 +312,9 @@
   }
 }
 
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
 .animate-fade-rise {
   animation: fade-rise 0.6s var(--ease-out-quart) both;
 }

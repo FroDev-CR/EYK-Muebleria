@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import type { Product } from "@/lib/products";
 import { ProductCard } from "@/components/product-card";
 import { Reveal } from "@/components/reveal";
@@ -19,12 +20,48 @@ interface Props {
     sample: Product | undefined;
     count: number;
   }>;
-  big: Product | undefined;
 }
 
-export function HomeContent({ bestSellers, previewByGroup, big }: Props) {
+export function HomeContent({ bestSellers, previewByGroup }: Props) {
   const { lang } = useLang();
   const h = translations.home;
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const idxRef = useRef(0);
+  const pausedRef = useRef(false);
+  const count = Math.min(bestSellers.length, 8);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || count === 0) return;
+
+    const advance = () => {
+      if (pausedRef.current || !scrollRef.current) return;
+      idxRef.current = (idxRef.current + 1) % count;
+      const cardWidth = (scrollRef.current.firstElementChild as HTMLElement)?.offsetWidth ?? scrollRef.current.offsetWidth;
+      scrollRef.current.scrollTo({
+        left: idxRef.current * cardWidth,
+        behavior: "smooth",
+      });
+    };
+
+    const pause = () => { pausedRef.current = true; };
+    const resume = () => { setTimeout(() => { pausedRef.current = false; }, 2500); };
+
+    const timer = setInterval(advance, 3500);
+    el.addEventListener("touchstart", pause, { passive: true });
+    el.addEventListener("mousedown", pause);
+    el.addEventListener("touchend", resume, { passive: true });
+    el.addEventListener("mouseup", resume);
+
+    return () => {
+      clearInterval(timer);
+      el.removeEventListener("touchstart", pause);
+      el.removeEventListener("mousedown", pause);
+      el.removeEventListener("touchend", resume);
+      el.removeEventListener("mouseup", resume);
+    };
+  }, [count]);
 
   return (
     <>
@@ -58,32 +95,28 @@ export function HomeContent({ bestSellers, previewByGroup, big }: Props) {
             </div>
 
             <div className="md:col-span-5">
-              {big && (
-                <Reveal variant="scale-in" delay={200}>
-                  <div className="product-watermark relative aspect-[4/5] rounded-xl overflow-hidden bg-[#f8f8f8] border border-[#e5e5e5]">
-                    <Image
-                      src={big.image}
-                      alt={big.name}
-                      fill
-                      sizes="(min-width: 768px) 40vw, 90vw"
-                      className="object-contain p-6 hover:scale-[1.04] transition-transform duration-[1200ms] ease-out"
-                      priority
-                    />
-                    <div className="absolute top-4 right-4 inline-flex items-center gap-2 bg-[#FB531F] text-white px-3 py-1.5 rounded-full">
-                      <span className="block w-1.5 h-1.5 rounded-full bg-white/70" />
-                      <span className="text-xs tracking-[0.12em] font-bold">{h.best_seller_badge[lang]}</span>
-                    </div>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <div className="bg-white/95 backdrop-blur-sm px-4 py-3 rounded-lg">
-                        <p className="text-[0.7rem] font-bold tracking-[0.15em] uppercase text-[#FB531F]">
-                          {h.featured[lang]}
-                        </p>
-                        <p className="font-[family-name:var(--font-display)] text-lg text-[#111] leading-tight mt-0.5">
-                          {big.name}
-                        </p>
+              {bestSellers.length > 0 && (
+                <Reveal delay={200}>
+                  <p className="eyebrow flex items-center gap-2 mb-4">
+                    <span className="inline-block w-2 h-2 rounded-full bg-[#FB531F]" />
+                    {h.bs_eyebrow[lang]}
+                  </p>
+                  <div
+                    ref={scrollRef}
+                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+                  >
+                    {bestSellers.slice(0, 8).map((p, i) => (
+                      <div key={p.id} className="min-w-[78vw] md:min-w-full flex-shrink-0 snap-start">
+                        <ProductCard product={p} index={i} priority={i < 2} />
                       </div>
-                    </div>
+                    ))}
                   </div>
+                  <Link
+                    href="/catalogo"
+                    className="mt-3 inline-flex items-center gap-1 text-[#FB531F] hover:text-[#d43e0a] font-semibold text-sm transition-colors"
+                  >
+                    {h.bs_link[lang]}
+                  </Link>
                 </Reveal>
               )}
             </div>
@@ -167,49 +200,6 @@ export function HomeContent({ bestSellers, previewByGroup, big }: Props) {
         </div>
       </section>
 
-      {/* ── BEST SELLERS ──────────────────────────────────────────────── */}
-      {bestSellers.length > 0 && (
-        <section className="container-edge pb-20 md:pb-28">
-          <Reveal>
-            <header className="flex items-end justify-between gap-8 mb-10">
-              <div>
-                <p className="eyebrow flex items-center gap-2">
-                  <span className="inline-block w-2 h-2 rounded-full bg-[#FB531F]" />
-                  {h.bs_eyebrow[lang]}
-                </p>
-                <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2rem,4.5vw,3rem)] leading-tight tracking-[-0.015em]">
-                  {h.bs_h2a[lang]}{" "}
-                  <span className="display-italic text-[#FB531F]">{h.bs_h2b[lang]}</span>.
-                </h2>
-                <p className="mt-3 text-[#666] text-[0.95rem] max-w-xl">{h.bs_sub[lang]}</p>
-              </div>
-              <Link
-                href="/catalogo"
-                className="hidden md:inline-flex items-center gap-1 text-[#FB531F] hover:text-[#d43e0a] font-semibold text-sm transition-colors"
-              >
-                {h.bs_link[lang]}
-              </Link>
-            </header>
-          </Reveal>
-
-          {/* Mobile: horizontal scroll; sm+: grid */}
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:snap-none sm:pb-0 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
-            {bestSellers.slice(0, 12).map((p, i) => (
-              <Reveal key={p.id} delay={Math.min(i * 60, 400)} className="min-w-[75vw] flex-shrink-0 snap-start sm:min-w-0 sm:flex-shrink">
-                <ProductCard product={p} index={i} priority={i < 4} />
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal delay={400}>
-            <div className="mt-10 flex justify-center">
-              <Link href="/catalogo" className="btn-primary">
-                {h.bs_cta[lang]}
-              </Link>
-            </div>
-          </Reveal>
-        </section>
-      )}
 
       {/* ── CATEGORÍAS ────────────────────────────────────────────────── */}
       <section className="bg-[#f8f8f8] border-y border-[#e5e5e5]">

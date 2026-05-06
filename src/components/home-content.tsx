@@ -70,12 +70,12 @@ export function HomeContent({ bestSellers, previewByGroup }: Props) {
         <HeroSpotlight />
         <div className="container-edge pt-12 md:pt-20 pb-16 md:pb-24">
           <div className="grid gap-12 md:gap-16 md:grid-cols-12 items-end">
-            <div className="md:col-span-7 animate-fade-rise">
+            <div className="min-w-0 md:col-span-7 animate-fade-rise">
               <p className="eyebrow flex items-center gap-3">
                 <span aria-hidden className="inline-block w-8 h-px bg-[#FB531F]" />
                 {h.eyebrow[lang]}
               </p>
-              <h1 className="mt-6 font-[family-name:var(--font-display)] text-[clamp(2.75rem,7.5vw,6rem)] leading-[0.98] tracking-[-0.025em] text-[#111]">
+              <h1 className="mt-6 font-[family-name:var(--font-display)] text-[clamp(1.75rem,8vw,2.5rem)] sm:text-[clamp(2rem,7vw,3rem)] md:text-[clamp(2.75rem,7.5vw,6rem)] leading-[1.05] md:leading-[0.98] tracking-[-0.025em] text-[#111]">
                 {h.hero_h1a[lang]}
                 <br />
                 <span className="display-italic text-[#FB531F]">{h.hero_h1b[lang]}</span>
@@ -94,16 +94,19 @@ export function HomeContent({ bestSellers, previewByGroup }: Props) {
               </div>
             </div>
 
-            <div className="md:col-span-5">
+            <div className="min-w-0 md:col-span-5">
               {bestSellers.length > 0 && (
-                <Reveal delay={200}>
-                  <p className="eyebrow flex items-center gap-2 mb-4">
-                    <span className="inline-block w-2 h-2 rounded-full bg-[#FB531F]" />
-                    {h.bs_eyebrow[lang]}
-                  </p>
+                <>
+                  <Reveal delay={200}>
+                    <p className="eyebrow flex items-center gap-2 mb-4">
+                      <span className="inline-block w-2 h-2 rounded-full bg-[#FB531F]" />
+                      {h.bs_eyebrow[lang]}
+                    </p>
+                  </Reveal>
                   <div
                     ref={scrollRef}
                     className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+                    style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x" }}
                   >
                     {bestSellers.slice(0, 8).map((p, i) => (
                       <div key={p.id} className="min-w-[78vw] md:min-w-full flex-shrink-0 snap-start">
@@ -117,7 +120,7 @@ export function HomeContent({ bestSellers, previewByGroup }: Props) {
                   >
                     {h.bs_link[lang]}
                   </Link>
-                </Reveal>
+                </>
               )}
             </div>
           </div>

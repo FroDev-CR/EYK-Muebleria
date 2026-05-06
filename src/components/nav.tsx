@@ -18,6 +18,7 @@ const links = [
 export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const { lang, setLang, t, darkMode, setDarkMode } = useLang();
 
@@ -30,7 +31,16 @@ export function Nav() {
   }
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      // Only hide on mobile (lg breakpoint = 1024px)
+      if (window.innerWidth < 1024) {
+        setHidden(y > lastY && y > 80);
+      }
+      lastY = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -39,7 +49,7 @@ export function Nav() {
   useEffect(() => { setOpen(false); }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 transition-all duration-300 bg-black/75 backdrop-blur-md border-b border-white/10">
+    <header className={`sticky top-0 z-50 transition-all duration-300 bg-black/75 backdrop-blur-md border-b border-white/10 lg:translate-y-0 ${hidden && !open ? "-translate-y-full" : "translate-y-0"}`}>
       <a
         href="#contenido"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:bg-[#FB531F] focus:text-white focus:px-3 focus:py-1 focus:rounded"

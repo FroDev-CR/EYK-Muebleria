@@ -125,6 +125,34 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
             <p className="mt-8 text-xs text-[var(--color-ink-subtle)]">
               Sin compromiso · Te respondemos el mismo día.
             </p>
+
+            {/* Métodos de pago */}
+            <div className="mt-6 pt-6 border-t border-[var(--color-line)]">
+              <p className="text-[0.65rem] font-bold tracking-[0.15em] uppercase text-[var(--color-ink-subtle)] mb-2.5">
+                Métodos de pago aceptados
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Visa */}
+                <div className="flex items-center justify-center rounded border border-[#e0e0e0] bg-[#1A1F71] px-3 py-1" title="Visa">
+                  <svg width="38" height="12" viewBox="0 0 38 12" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
+                    <text x="19" y="11" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold" fontStyle="italic" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="1">VISA</text>
+                  </svg>
+                </div>
+                {/* Mastercard */}
+                <div className="flex items-center justify-center rounded border border-[#e0e0e0] bg-white px-2 py-1" title="Mastercard">
+                  <svg width="30" height="20" viewBox="0 0 34 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Mastercard">
+                    <circle cx="13" cy="11" r="9" fill="#EB001B"/>
+                    <circle cx="21" cy="11" r="9" fill="#F79E1B" opacity="0.88"/>
+                  </svg>
+                </div>
+                {/* Amex */}
+                <div className="flex items-center justify-center rounded border border-[#007BC1] bg-[#007BC1] px-2.5 py-1" title="American Express">
+                  <span className="text-white text-[0.6rem] font-black tracking-widest leading-none">AMEX</span>
+                </div>
+                {/* Financing */}
+                <span className="text-[0.78rem] text-[var(--color-ink-muted)]">· Financiamiento disponible</span>
+              </div>
+            </div>
           </div>
         </div>
       </article>

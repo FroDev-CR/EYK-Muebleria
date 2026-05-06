@@ -83,13 +83,9 @@ export function Footer() {
           </p>
           <div className="flex flex-wrap items-center gap-3">
             {/* Visa */}
-            <div className="flex items-center justify-center rounded-md border border-[#e0e0e0] bg-white px-2 py-1.5" title="Visa">
-              <svg width="46" height="16" viewBox="0 0 46 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
-                <path d="M18.5 1L15 15H11.8L15.3 1H18.5Z" fill="#1A1F71"/>
-                <path d="M30.4 1.3C29.7 1 28.6 0.8 27.2 0.8C23.7 0.8 21.2 2.6 21.2 5.2C21.2 7.1 22.9 8.1 24.2 8.7C25.5 9.3 25.9 9.7 25.9 10.3C25.9 11.2 24.8 11.6 23.8 11.6C22.4 11.6 21.7 11.4 20.5 10.9L20.1 10.7L19.6 13.6C20.5 14 22 14.4 23.6 14.4C27.3 14.4 29.7 12.6 29.7 9.8C29.7 8.3 28.8 7.2 26.9 6.3C25.7 5.7 25 5.3 25 4.7C25 4.1 25.7 3.5 27.2 3.5C28.4 3.5 29.3 3.8 30 4L30.4 4.2L30.9 1.4L30.4 1.3Z" fill="#1A1F71"/>
-                <path d="M35.2 1H32.7C31.9 1 31.3 1.2 31 2L26 15H29.7L30.4 13H34.9L35.3 15H38.6L35.2 1ZM31.3 10.4C31.6 9.6 32.8 6.3 32.8 6.3C32.8 6.3 33.1 5.4 33.3 4.9L33.6 6.1C33.6 6.1 34.4 9.6 34.6 10.4H31.3Z" fill="#1A1F71"/>
-                <path d="M11.4 1L7.9 10.3L7.5 8.6C6.8 6.4 4.7 4 2.3 2.8L5.5 15H9.2L15.1 1H11.4Z" fill="#1A1F71"/>
-                <path d="M4.2 1H0.2L0.1 1.2C3.2 1.9 5.3 3.6 6.2 5.7L5.2 2.1C5 1.3 4.7 1 4.2 1Z" fill="#F9A51A"/>
+            <div className="flex items-center justify-center rounded-md border border-[#e0e0e0] bg-[#1A1F71] px-3 py-1.5" title="Visa">
+              <svg width="42" height="14" viewBox="0 0 42 14" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
+                <text x="21" y="13" textAnchor="middle" fill="white" fontSize="13" fontWeight="bold" fontStyle="italic" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="1">VISA</text>
               </svg>
             </div>
 

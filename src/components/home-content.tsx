@@ -117,6 +117,56 @@ export function HomeContent({ bestSellers, previewByGroup, big }: Props) {
         </div>
       </section>
 
+      {/* ── PROCESO ───────────────────────────────────────────────────── */}
+      <section className="bg-[#111] text-white">
+        <div className="container-edge py-20 md:py-28">
+          <div className="grid gap-12 md:grid-cols-12 items-start">
+            <Reveal variant="slide-right" className="md:col-span-5">
+              <p className="text-[0.75rem] font-bold tracking-[0.2em] uppercase text-[#FB531F]">
+                {h.process_eyebrow[lang]}
+              </p>
+              <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.015em]">
+                {h.process_h2a[lang]}{" "}
+                <span className="display-italic text-[#FB531F]">{h.process_h2b[lang]}</span>.
+              </h2>
+              <p className="mt-6 text-[1.0625rem] leading-relaxed text-white/70 max-w-md">
+                {h.process_sub[lang]}
+              </p>
+              <p className="mt-3 text-sm text-white/40">{h.process_note[lang]}</p>
+              <div className="mt-8 flex gap-3 flex-wrap">
+                <Link href="/a-la-medida" className="btn-primary">
+                  {h.process_cta1[lang]}
+                </Link>
+                <a
+                  href={whatsappLink("Hola EYK, quiero cotizar un mueble a la medida.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/20 text-white hover:bg-white/10 transition-colors text-[0.9375rem] font-medium"
+                >
+                  {h.process_cta2[lang]}
+                </a>
+              </div>
+            </Reveal>
+
+            <ol className="md:col-span-7 grid sm:grid-cols-3 gap-px bg-white/10">
+              {h.steps.map((step, i) => (
+                <Reveal key={step.n} delay={i * 150 + 200} className="bg-[#111]">
+                  <li className="p-7 md:p-8 h-full">
+                    <p className="display-italic text-3xl text-[#FB531F]">{step.n}</p>
+                    <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl text-white">
+                      {step[`${lang}_t` as `es_t` | `en_t`]}
+                    </h3>
+                    <p className="mt-2 text-[0.9375rem] text-white/60 leading-relaxed">
+                      {step[`${lang}_b` as `es_b` | `en_b`]}
+                    </p>
+                  </li>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
       {/* ── BEST SELLERS ──────────────────────────────────────────────── */}
       {bestSellers.length > 0 && (
         <section className="container-edge pb-20 md:pb-28">
@@ -142,9 +192,10 @@ export function HomeContent({ bestSellers, previewByGroup, big }: Props) {
             </header>
           </Reveal>
 
-          <div className="grid gap-5 md:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {/* Mobile: horizontal scroll; sm+: grid */}
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:snap-none sm:pb-0 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
             {bestSellers.slice(0, 12).map((p, i) => (
-              <Reveal key={p.id} delay={Math.min(i * 60, 400)}>
+              <Reveal key={p.id} delay={Math.min(i * 60, 400)} className="min-w-[75vw] flex-shrink-0 snap-start sm:min-w-0 sm:flex-shrink">
                 <ProductCard product={p} index={i} priority={i < 4} />
               </Reveal>
             ))}
@@ -217,56 +268,6 @@ export function HomeContent({ bestSellers, previewByGroup, big }: Props) {
                 </Reveal>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* ── PROCESO ───────────────────────────────────────────────────── */}
-      <section className="bg-[#111] text-white">
-        <div className="container-edge py-20 md:py-28">
-          <div className="grid gap-12 md:grid-cols-12 items-start">
-            <Reveal variant="slide-right" className="md:col-span-5">
-              <p className="text-[0.75rem] font-bold tracking-[0.2em] uppercase text-[#FB531F]">
-                {h.process_eyebrow[lang]}
-              </p>
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.015em]">
-                {h.process_h2a[lang]}{" "}
-                <span className="display-italic text-[#FB531F]">{h.process_h2b[lang]}</span>.
-              </h2>
-              <p className="mt-6 text-[1.0625rem] leading-relaxed text-white/70 max-w-md">
-                {h.process_sub[lang]}
-              </p>
-              <p className="mt-3 text-sm text-white/40">{h.process_note[lang]}</p>
-              <div className="mt-8 flex gap-3 flex-wrap">
-                <Link href="/a-la-medida" className="btn-primary">
-                  {h.process_cta1[lang]}
-                </Link>
-                <a
-                  href={whatsappLink("Hola EYK, quiero cotizar un mueble a la medida.")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/20 text-white hover:bg-white/10 transition-colors text-[0.9375rem] font-medium"
-                >
-                  {h.process_cta2[lang]}
-                </a>
-              </div>
-            </Reveal>
-
-            <ol className="md:col-span-7 grid sm:grid-cols-3 gap-px bg-white/10">
-              {h.steps.map((step, i) => (
-                <Reveal key={step.n} delay={i * 150 + 200} className="bg-[#111]">
-                  <li className="p-7 md:p-8 h-full">
-                    <p className="display-italic text-3xl text-[#FB531F]">{step.n}</p>
-                    <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl text-white">
-                      {step[`${lang}_t` as `es_t` | `en_t`]}
-                    </h3>
-                    <p className="mt-2 text-[0.9375rem] text-white/60 leading-relaxed">
-                      {step[`${lang}_b` as `es_b` | `en_b`]}
-                    </p>
-                  </li>
-                </Reveal>
-              ))}
-            </ol>
           </div>
         </div>
       </section>

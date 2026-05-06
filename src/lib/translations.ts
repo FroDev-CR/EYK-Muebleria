@@ -173,15 +173,19 @@ export const translations = {
 
   // ── Categorías (labels) ───────────────────────────────────────────
   categories: {
-    salas:           { es: "Salas",             en: "Living Rooms" },
-    esquineros:      { es: "Esquineros",         en: "Corner Sofas" },
-    "sofa-camas":    { es: "Sofá Camas",         en: "Sofa Beds" },
-    butacas:         { es: "Butacas",            en: "Armchairs" },
-    "sofas-tantricos": { es: "Tántricos",        en: "Lounge Sofas" },
-    comedores:       { es: "Comedores",          en: "Dining Sets" },
-    camas:           { es: "Camas",              en: "Beds" },
-    madera:          { es: "Madera",             en: "Wood Furniture" },
-    camillas:        { es: "Camillas",           en: "Spa Beds" },
+    sofas:           { es: "Sofás",                       en: "Sofas" },
+    "divan-ottoman": { es: "Sofá Diván · Sofá Ottoman",   en: "Diván / Ottoman Sofa" },
+    esquineros:      { es: "Esquineros",                  en: "Corner Sofas" },
+    "sofa-camas":    { es: "Sofá Camas",                  en: "Sofa Beds" },
+    comedores:       { es: "Comedores",                   en: "Dining Sets" },
+    camas:           { es: "Camas",                       en: "Beds" },
+    butacas:         { es: "Butacas",                     en: "Armchairs" },
+    tendencia:       { es: "Tendencia",                   en: "Trending" },
+    // Legacy
+    salas:           { es: "Salas",                       en: "Living Rooms" },
+    "sofas-tantricos": { es: "Tántricos",                 en: "Lounge Sofas" },
+    madera:          { es: "Madera",                      en: "Wood Furniture" },
+    camillas:        { es: "Camillas",                    en: "Spa Beds" },
   },
 } as const;
 

@@ -7,15 +7,14 @@ import type { Product } from "@/lib/products";
 import { FABRICS } from "@/lib/data";
 
 const CATEGORIES = [
-  { id: "salas", label: "Salas" },
+  { id: "sofas", label: "Sofás" },
+  { id: "divan-ottoman", label: "Sofá Diván · Sofá Ottoman" },
   { id: "esquineros", label: "Esquineros" },
   { id: "sofa-camas", label: "Sofá Camas" },
-  { id: "butacas", label: "Butacas" },
-  { id: "sofas-tantricos", label: "Sofás Tántricos" },
   { id: "comedores", label: "Comedores" },
   { id: "camas", label: "Camas" },
-  { id: "madera", label: "Madera" },
-  { id: "camillas", label: "Camillas" },
+  { id: "butacas", label: "Butacas" },
+  { id: "tendencia", label: "Tendencia (minimalistas, curvos)" },
 ];
 
 interface Props {
@@ -33,7 +32,7 @@ export function AdminProductForm({ product, mode }: Props) {
     id: product?.id || "",
     slug: product?.slug || "",
     name: product?.name || "",
-    category: product?.category || "salas",
+    category: product?.category || "sofas",
     description: product?.description || "",
     image: product?.image || "",
     price: product?.price?.toString() || "",

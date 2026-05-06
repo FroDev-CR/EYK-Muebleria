@@ -1,15 +1,19 @@
 export type CategoryId =
-  | "salas"
+  | "sofas"
+  | "divan-ottoman"
   | "esquineros"
   | "sofa-camas"
-  | "butacas"
-  | "sofas-tantricos"
-  | "camas"
   | "comedores"
+  | "camas"
+  | "butacas"
+  | "tendencia"
+  // Legacy — productos sin re-categorizar
+  | "salas"
+  | "sofas-tantricos"
   | "madera"
   | "camillas";
 
-export type CategoryGroup = "salas" | "comedores" | "camas" | "madera" | "otros";
+export type CategoryGroup = "sofas" | "comedores" | "camas";
 
 export interface Category {
   id: CategoryId;
@@ -22,56 +26,48 @@ export interface Category {
 
 export const CATEGORIES: Category[] = [
   {
-    id: "salas",
-    group: "salas",
-    label: "Sofás · Sofá Diván",
-    short: "Salas",
+    id: "sofas",
+    group: "sofas",
+    label: "Sofás",
+    short: "Sofás",
     description:
-      "Sofás de tres, dos y una plaza, con o sin diván. Personaliza medidas, tela, color y posición del diván.",
+      "Sofás de tres, dos y una plaza. Personaliza medidas, tela y color.",
+    customizable: "Medidas · Tela · Color",
+  },
+  {
+    id: "divan-ottoman",
+    group: "sofas",
+    label: "Sofá Diván · Sofá Ottoman",
+    short: "Diván / Ottoman",
+    description:
+      "Sofás con diván u ottoman incluido. Posición del diván personalizable.",
     customizable: "Medidas · Tela · Color · Posición de diván",
   },
   {
     id: "esquineros",
-    group: "salas",
+    group: "sofas",
     label: "Esquineros",
     short: "Esquineros",
     description:
-      "Esquinas modulares con porta vasos, brazo revistero, brazo con gaveta, repisa de esquina y más detalles en madera.",
+      "Esquinas modulares con porta vasos, brazo revistero, brazo con gaveta y detalles en madera.",
     customizable: "Tela · Color · Tono de madera · Detalles",
   },
   {
     id: "sofa-camas",
-    group: "salas",
+    group: "sofas",
     label: "Sofá Camas",
     short: "Sofá camas",
     description:
-      "Sofá camas matrimoniales, divanes con baúl y respaldares reclinables. Para salas que también descansan.",
+      "Sofá camas matrimoniales, divanes con baúl y respaldares reclinables.",
     customizable: "Medidas · Tela · Color · Posición de diván",
-  },
-  {
-    id: "butacas",
-    group: "salas",
-    label: "Butacas · Ottoman",
-    short: "Butacas",
-    description:
-      "Butacas individuales, mecedoras, capitoneadas, princesa y ottomans para complementar la sala.",
-    customizable: "Tela · Color · Tono de madera",
-  },
-  {
-    id: "sofas-tantricos",
-    group: "salas",
-    label: "Sofás Tántricos",
-    short: "Tántricos",
-    description: "Piezas amplias y bajas para descanso prolongado.",
-    customizable: "Tela · Color",
   },
   {
     id: "comedores",
     group: "comedores",
-    label: "Comedores · Desayunadores",
+    label: "Comedores",
     short: "Comedores",
     description:
-      "Comedores de 4 y 6 sillas, desayunadores de 4 bancos. Mesas en madera Pino, Laurel, Cedro o Cenízaro con sobres en vidrio o porcelanato.",
+      "Comedores de 4 y 6 sillas, desayunadores. Madera Pino, Laurel, Cedro o Cenízaro con sobres en vidrio o porcelanato.",
     customizable: "Tono de madera · Tipo de sobre · Tela y color de silla",
   },
   {
@@ -80,33 +76,34 @@ export const CATEGORIES: Category[] = [
     label: "Camas",
     short: "Camas",
     description:
-      "Camas individuales, matrimoniales, queen y king. Camarotes, gavetas y combinaciones con escritorio. Cualquier diseño en cualquier medida.",
+      "Camas individuales, matrimoniales, queen y king. Camarotes, gavetas y combinaciones con escritorio.",
     customizable: "Medida · Tela · Color · Tono de madera",
   },
   {
-    id: "madera",
-    group: "madera",
-    label: "Madera Varios",
-    short: "Madera",
+    id: "butacas",
+    group: "sofas",
+    label: "Butacas",
+    short: "Butacas",
     description:
-      "Mesas de noche, gaveteros, recibidores, cómodas, trasteros y bases. Madera Pino, Laurel, Cedro o Cenízaro.",
-    customizable: "Medidas · Tono de madera",
+      "Butacas individuales, mecedoras, capitoneadas y princesa para complementar la sala.",
+    customizable: "Tela · Color · Tono de madera",
   },
   {
-    id: "camillas",
-    group: "otros",
-    label: "Camillas Lashista",
-    short: "Camillas",
-    description: "Camillas con base metálica o de madera para profesionales.",
-    customizable: "Tela · Color",
+    id: "tendencia",
+    group: "sofas",
+    label: "Tendencia",
+    short: "Tendencia",
+    description:
+      "Sofás minimalistas y curvos. Diseños contemporáneos con líneas suaves.",
+    customizable: "Tela · Color · Forma",
   },
 ];
 
 export const CATEGORY_GROUPS: { id: CategoryGroup; label: string; description: string }[] = [
   {
-    id: "salas",
-    label: "Salas",
-    description: "Sofás, esquineros, sofá diván, sofá camas, butacas y ottomans.",
+    id: "sofas",
+    label: "Sofás",
+    description: "Sofás, esquineros, sofá diván, sofá camas, butacas y tendencia.",
   },
   {
     id: "comedores",
@@ -117,11 +114,6 @@ export const CATEGORY_GROUPS: { id: CategoryGroup; label: string; description: s
     id: "camas",
     label: "Camas",
     description: "Camas en cualquier medida, camarotes y combinaciones.",
-  },
-  {
-    id: "madera",
-    label: "Muebles en madera",
-    description: "Recibidores, gaveteros, mesas y cómodas.",
   },
 ];
 

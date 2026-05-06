@@ -67,15 +67,19 @@ const CONTENT_SECTIONS = [
 ];
 
 const CATEGORY_LABELS: Record<string, string> = {
-  salas: "Salas",
+  sofas: "Sofás",
+  "divan-ottoman": "Sofá Diván · Sofá Ottoman",
   esquineros: "Esquineros",
   "sofa-camas": "Sofá Camas",
-  butacas: "Butacas",
-  "sofas-tantricos": "Tántricos",
   comedores: "Comedores",
   camas: "Camas",
-  madera: "Madera",
-  camillas: "Camillas",
+  butacas: "Butacas",
+  tendencia: "Tendencia",
+  // Legacy (productos sin re-categorizar)
+  salas: "Salas (legacy)",
+  "sofas-tantricos": "Tántricos (legacy)",
+  madera: "Madera (legacy)",
+  camillas: "Camillas (legacy)",
 };
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";

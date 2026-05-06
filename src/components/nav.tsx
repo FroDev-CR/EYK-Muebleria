@@ -39,7 +39,7 @@ export function Nav() {
   useEffect(() => { setOpen(false); }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 transition-all duration-300 bg-black border-b border-black">
+    <header className="sticky top-0 z-50 transition-all duration-300 bg-black/75 backdrop-blur-md border-b border-white/10">
       <a
         href="#contenido"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:bg-[#FB531F] focus:text-white focus:px-3 focus:py-1 focus:rounded"
@@ -146,7 +146,7 @@ export function Nav() {
           open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
         }`}
       >
-        <div className="min-h-0 bg-black border-t border-black">
+        <div className="min-h-0 bg-black/90 backdrop-blur-md border-t border-white/10">
           <nav aria-label="Móvil" className="container-edge pb-6 pt-2">
             <ul className="flex flex-col">
               {links.map((l) => {

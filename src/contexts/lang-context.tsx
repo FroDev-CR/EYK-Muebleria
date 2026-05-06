@@ -13,14 +13,18 @@ interface LangContextValue {
   ) => string;
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
+  contentOverrides: Record<string, string>;
+  setContentOverrides: (overrides: Record<string, string>) => void;
 }
 
-const LangContext = createContext<LangContextValue>({ 
-  lang: "es", 
-  setLang: () => {}, 
+const LangContext = createContext<LangContextValue>({
+  lang: "es",
+  setLang: () => {},
   t: () => "",
   darkMode: false,
-  setDarkMode: () => {}
+  setDarkMode: () => {},
+  contentOverrides: {},
+  setContentOverrides: () => {},
 });
 
 export function LangProvider({
@@ -32,6 +36,7 @@ export function LangProvider({
 }) {
   const [lang, setLangState] = useState<Lang>(initialLang);
   const [darkMode, setDarkModeState] = useState<boolean>(false);
+  const [contentOverrides, setContentOverrides] = useState<Record<string, string>>({});
 
   useEffect(() => {
     // Sync from localStorage on mount
@@ -39,7 +44,16 @@ export function LangProvider({
     if (stored === "es" || stored === "en") setLangState(stored);
 
     const storedDark = localStorage.getItem("eyk_darkMode");
-    if (storedDark === "true") setDarkModeState(true);
+    if (storedDark === "true") {
+      setDarkModeState(true);
+      document.documentElement.classList.add("dark");
+    }
+
+    // Load site content overrides
+    fetch("/api/site-content")
+      .then((r) => r.json())
+      .then((data: Record<string, string>) => setContentOverrides(data))
+      .catch(() => {});
 
     // Listen for changes from the nav toggle
     const handler = (e: Event) => {
@@ -69,9 +83,20 @@ export function LangProvider({
   const t = <Section extends keyof Translations, Key extends keyof Translations[Section]>(
     section: Section,
     key: Key
-  ): string => translate(section, key, lang);
+  ): string => {
+    // Spanish overrides take priority over translations.ts
+    if (lang === "es") {
+      const override = contentOverrides[`${section}.${String(key)}`];
+      if (override) return override;
+    }
+    return translate(section, key, lang);
+  };
 
-  return <LangContext.Provider value={{ lang, setLang, t, darkMode, setDarkMode }}>{children}</LangContext.Provider>;
+  return (
+    <LangContext.Provider value={{ lang, setLang, t, darkMode, setDarkMode, contentOverrides, setContentOverrides }}>
+      {children}
+    </LangContext.Provider>
+  );
 }
 
 export function useLang(): LangContextValue {

@@ -1,21 +1,22 @@
-import { CustomOrderForm } from "@/components/custom-order-form";
+"use client";
 
-export const metadata = {
-  title: "A la medida",
-  description:
-    "Cotiza un mueble fabricado a la medida. Sala, comedor, cama o cualquier diseño de referencia.",
-};
+import { CustomOrderForm } from "@/components/custom-order-form";
+import { useLang } from "@/contexts/lang-context";
+import { translations } from "@/lib/translations";
 
 export default function ALaMedidaPage() {
+  const { lang, t } = useLang();
+  const steps = translations.custom.steps;
+
   return (
     <>
       <header className="container-edge pt-12 md:pt-20 pb-12">
-        <p className="eyebrow">A la medida</p>
+        <p className="eyebrow">{t("custom", "eyebrow")}</p>
         <h1 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2.25rem,5.5vw,4rem)] leading-[1.04] tracking-[-0.02em] max-w-3xl">
-          Cuéntanos tu idea. <span className="display-italic">La hacemos realidad.</span>
+          {t("custom", "h1a")} <span className="display-italic">{t("custom", "h1b")}</span>
         </h1>
         <p className="mt-6 max-w-xl text-[1.0625rem] text-[var(--color-ink-2)] leading-relaxed">
-          Cualquier diseño se puede cotizar. Adjunta una foto de referencia, dinos las medidas, el espacio donde irá y nos encargamos del resto.
+          {t("custom", "sub")}
         </p>
       </header>
 
@@ -27,39 +28,18 @@ export default function ALaMedidaPage() {
 
           <aside className="md:col-span-5 md:pl-8 md:border-l md:border-[var(--color-line)]">
             <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-tight">
-              Cómo funciona
+              {t("custom", "how_h2")}
             </h2>
             <ol className="mt-6 space-y-6">
-              {[
-                {
-                  n: "01",
-                  title: "Llenas el formulario",
-                  body: "Foto, medidas y detalles. No te preocupes si no sabes todo.",
-                },
-                {
-                  n: "02",
-                  title: "Te contactamos",
-                  body: "Por WhatsApp, generalmente el mismo día. Confirmamos detalles.",
-                },
-                {
-                  n: "03",
-                  title: "Cotización formal",
-                  body: "Te enviamos precio, materiales y tiempo de entrega.",
-                },
-                {
-                  n: "04",
-                  title: "Fabricación",
-                  body: "Empezamos con el 50% de adelanto. Entre 2 y 4 semanas.",
-                },
-              ].map((s) => (
+              {steps.map((s) => (
                 <li key={s.n} className="grid grid-cols-[auto_1fr] gap-5 items-baseline">
                   <span className="display-italic text-[var(--color-walnut)] text-xl">{s.n}</span>
                   <div>
                     <p className="font-[family-name:var(--font-display)] text-lg text-[var(--color-ink)]">
-                      {s.title}
+                      {lang === "es" ? s.es : s.en}
                     </p>
                     <p className="mt-1 text-[0.95rem] text-[var(--color-ink-muted)] leading-relaxed">
-                      {s.body}
+                      {lang === "es" ? s.es_b : s.en_b}
                     </p>
                   </div>
                 </li>
@@ -67,19 +47,19 @@ export default function ALaMedidaPage() {
             </ol>
 
             <div className="mt-10 p-6 rounded-sm bg-[var(--color-bone-2)] border border-[var(--color-line)]">
-              <p className="eyebrow">Materiales</p>
+              <p className="eyebrow">{t("custom", "materials_h3")}</p>
               <dl className="mt-3 space-y-2 text-[0.9375rem] text-[var(--color-ink-2)]">
                 <div className="flex gap-3">
-                  <dt className="text-[var(--color-ink-muted)] min-w-[70px]">Telas:</dt>
-                  <dd>Lino, microfibra, vinil</dd>
+                  <dt className="text-[var(--color-ink-muted)] min-w-[70px]">{t("custom", "fabrics")}</dt>
+                  <dd>{t("custom", "fabrics_list")}</dd>
                 </div>
                 <div className="flex gap-3">
-                  <dt className="text-[var(--color-ink-muted)] min-w-[70px]">Maderas:</dt>
-                  <dd>Pino, laurel, cenízaro</dd>
+                  <dt className="text-[var(--color-ink-muted)] min-w-[70px]">{t("custom", "woods")}</dt>
+                  <dd>{t("custom", "woods_list")}</dd>
                 </div>
                 <div className="flex gap-3">
-                  <dt className="text-[var(--color-ink-muted)] min-w-[70px]">Sobres:</dt>
-                  <dd>Vidrio templado, porcelanato</dd>
+                  <dt className="text-[var(--color-ink-muted)] min-w-[70px]">{t("custom", "tops")}</dt>
+                  <dd>{t("custom", "tops_list")}</dd>
                 </div>
               </dl>
             </div>

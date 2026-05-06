@@ -1,13 +1,9 @@
-import { Metadata } from "next";
+"use client";
+
 import { Reveal } from "@/components/reveal";
+import { useLang } from "@/contexts/lang-context";
 import { whatsappLink } from "@/lib/data";
 
-export const metadata: Metadata = {
-  title: "Entregas a clientes",
-  description: "Muebles EYK en los hogares de nuestros clientes. Reseñas y fotos de entregas reales.",
-};
-
-// Reseñas de ejemplo — actualizar con reseñas reales
 const reviews = [
   {
     name: "María José R.",
@@ -56,21 +52,22 @@ function Stars({ n }: { n: number }) {
 }
 
 export default function EntregasPage() {
+  const { t } = useLang();
+
   return (
     <>
       <header className="container-edge pt-12 md:pt-20 pb-10 md:pb-14">
         <Reveal>
           <p className="eyebrow flex items-center gap-3">
             <span aria-hidden className="inline-block w-8 h-px bg-[#FB531F]" />
-            Entregas a clientes
+            {t("deliveries", "eyebrow")}
           </p>
           <h1 className="mt-5 font-[family-name:var(--font-display)] text-[clamp(2.25rem,5.5vw,4rem)] leading-[1.04] tracking-[-0.02em]">
-            Muebles{" "}
-            <span className="display-italic text-[#FB531F]">en su hogar</span>
+            {t("deliveries", "h1a")}{" "}
+            <span className="display-italic text-[#FB531F]">{t("deliveries", "h1b")}</span>
           </h1>
           <p className="mt-5 max-w-2xl text-[1.0625rem] text-[#555] leading-relaxed">
-            Cada entrega es el resultado de semanas de fabricación artesanal.
-            Aquí compartimos algunos de los hogares que han confiado en nosotros.
+            {t("deliveries", "sub")}
           </p>
         </Reveal>
       </header>
@@ -81,10 +78,10 @@ export default function EntregasPage() {
           <div className="bg-[#f8f8f8] border-2 border-dashed border-[#e5e5e5] rounded-2xl p-12 text-center">
             <div className="text-5xl mb-4">📸</div>
             <h2 className="font-[family-name:var(--font-display)] text-xl text-[#111] mb-2">
-              Fotos de entregas próximamente
+              {t("deliveries", "photos_h2")}
             </h2>
             <p className="text-[#777] text-sm max-w-sm mx-auto">
-              Estamos recopilando las fotografías de entregas recientes. Mientras tanto, podés ver el catálogo o contactarnos por WhatsApp.
+              {t("deliveries", "photos_sub")}
             </p>
             <div className="mt-6 flex gap-3 justify-center flex-wrap">
               <a
@@ -93,7 +90,7 @@ export default function EntregasPage() {
                 rel="noopener noreferrer"
                 className="btn-primary text-sm"
               >
-                Ver fotos por WhatsApp
+                {t("deliveries", "photos_cta")}
               </a>
             </div>
           </div>
@@ -105,9 +102,9 @@ export default function EntregasPage() {
         <div className="container-edge py-16 md:py-24">
           <Reveal>
             <header className="mb-12">
-              <p className="eyebrow">Lo que dicen</p>
+              <p className="eyebrow">{t("deliveries", "reviews_eyebrow")}</p>
               <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.75rem)] leading-tight tracking-[-0.015em]">
-                Clientes satisfechos
+                {t("deliveries", "reviews_h2")}
               </h2>
             </header>
           </Reveal>
@@ -135,10 +132,10 @@ export default function EntregasPage() {
       <section className="container-edge py-16 md:py-20 text-center">
         <Reveal>
           <h2 className="font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] tracking-[-0.015em]">
-            ¿Querés ser el próximo cliente?
+            {t("deliveries", "cta_h2")}
           </h2>
           <p className="mt-4 text-[#666] max-w-md mx-auto">
-            Contáctanos y cotizamos tu mueble hoy mismo.
+            {t("deliveries", "cta_sub")}
           </p>
           <div className="mt-8 flex gap-3 justify-center flex-wrap">
             <a
@@ -147,10 +144,10 @@ export default function EntregasPage() {
               rel="noopener noreferrer"
               className="btn-primary"
             >
-              Cotizar por WhatsApp
+              {t("deliveries", "cta1")}
             </a>
             <a href="/a-la-medida" className="btn-secondary">
-              Pedido a la medida
+              {t("deliveries", "cta2")}
             </a>
           </div>
         </Reveal>

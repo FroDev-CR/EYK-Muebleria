@@ -120,6 +120,48 @@ export const translations = {
     ],
   },
 
+  // ── Contacto ─────────────────────────────────────────────────────
+  contact: {
+    eyebrow:    { es: "Contacto",                     en: "Contact" },
+    h1:         { es: "Hablemos de tu próximo mueble.", en: "Let's talk about your next furniture." },
+    sub:        { es: "Respondemos por WhatsApp generalmente el mismo día. También puedes escribirnos por correo o seguirnos en Instagram para ver trabajos recientes.", en: "We reply on WhatsApp usually the same day. You can also email us or follow us on Instagram to see recent projects." },
+    whatsapp:   { es: "WhatsApp",         en: "WhatsApp" },
+    whatsapp_sub: { es: "Respuesta el mismo día", en: "Same day response" },
+    email:      { es: "Correo",          en: "Email" },
+    email_sub:  { es: "Para envíos formales", en: "For formal inquiries" },
+    instagram:  { es: "Instagram",       en: "Instagram" },
+    insta_sub:  { es: "Trabajos del taller", en: "Workshop projects" },
+    faq_h2:     { es: "Preguntas frecuentes", en: "Frequently asked questions" },
+    faq: [
+      { es: "¿Cuánto tarda un pedido?", en: "How long does an order take?", es_a: "Entre 2 y 4 semanas según el diseño y la complejidad.", en_a: "2 to 4 weeks depending on design and complexity." },
+      { es: "¿Hacen entregas a todo el país?", en: "Do you deliver nationwide?", es_a: "Sí. La logística se cotiza aparte según la zona.", en_a: "Yes. Shipping costs vary by region." },
+      { es: "¿Puedo llevar mi propio diseño?", en: "Can I bring my own design?", es_a: "Claro. Cualquier diseño de referencia se puede cotizar.", en_a: "Of course. Any reference design can be quoted." },
+      { es: "¿Manejan adelantos?", en: "Do you require a deposit?", es_a: "Sí, normalmente trabajamos con un 50% de adelanto.", en_a: "Yes, we typically work with a 50% deposit." },
+    ],
+  },
+
+  // ── A la medida ───────────────────────────────────────────────────
+  custom: {
+    eyebrow:    { es: "A la medida",                   en: "Made to order" },
+    h1a:        { es: "Cuéntanos tu idea.",           en: "Tell us your idea." },
+    h1b:        { es: "La hacemos realidad.",         en: "We'll make it real." },
+    sub:        { es: "Cualquier diseño se puede cotizar. Adjunta una foto de referencia, dinos las medidas, el espacio donde irá y nos encargamos del resto.", en: "Any design can be quoted. Attach a reference photo, tell us the dimensions, where it will go, and we'll handle the rest." },
+    how_h2:     { es: "Cómo funciona",                en: "How it works" },
+    steps: [
+      { n: "01", es: "Llenas el formulario", en: "Fill the form", es_b: "Foto, medidas y detalles. No te preocupes si no sabes todo.", en_b: "Photo, dimensions and details. Don't worry if you don't know everything." },
+      { n: "02", es: "Te contactamos", en: "We contact you", es_b: "Por WhatsApp, generalmente el mismo día. Confirmamos detalles.", en_b: "Via WhatsApp, usually the same day. We confirm details." },
+      { n: "03", es: "Cotización formal", en: "Formal quote", es_b: "Te enviamos precio, materiales y tiempo de entrega.", en_b: "We send you price, materials and delivery time." },
+      { n: "04", es: "Fabricación", en: "Production", es_b: "Empezamos con el 50% de adelanto. Entre 2 y 4 semanas.", en_b: "We start with 50% deposit. 2 to 4 weeks production." },
+    ],
+    materials_h3: { es: "Materiales",                  en: "Materials" },
+    fabrics:    { es: "Telas:",                        en: "Fabrics:" },
+    fabrics_list: { es: "Lino, microfibra, vinil",    en: "Linen, microfiber, vinyl" },
+    woods:      { es: "Maderas:",                      en: "Woods:" },
+    woods_list: { es: "Pino, laurel, cenízaro",       en: "Pine, laurel, ziricote" },
+    tops:       { es: "Sobres:",                       en: "Tops:" },
+    tops_list:  { es: "Vidrio templado, porcelanato", en: "Tempered glass, porcelain" },
+  },
+
   // ── Footer ────────────────────────────────────────────────────────
   footer: {
     tagline:    { es: "Fabricamos salas, comedores, camas y muebles en madera a la medida. Tela, color y acabados a tu gusto. Cotizamos cualquier diseño de referencia.", en: "We make living rooms, dining sets, beds and wood furniture to order. Fabric, color and finishes your way. We quote any reference design." },

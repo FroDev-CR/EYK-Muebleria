@@ -1,22 +1,20 @@
 import { NextResponse } from "next/server";
-import { readFileSync, writeFileSync, existsSync } from "fs";
-import { join } from "path";
 import type { Product } from "@/lib/products";
 import type { CategoryId } from "@/lib/data";
+import { createAdminClient, isAdminConfigured } from "@/lib/supabase-admin";
 
-const OVERRIDES_PATH = join(process.cwd(), "src", "data", "products-admin.json");
+const TABLE = "product_overrides";
 
-function readOverrides(): Record<string, Partial<Product>> {
-  if (!existsSync(OVERRIDES_PATH)) return {};
-  try {
-    return JSON.parse(readFileSync(OVERRIDES_PATH, "utf-8"));
-  } catch {
-    return {};
+async function readOverrides(): Promise<Record<string, Partial<Product>>> {
+  if (!isAdminConfigured()) return {};
+  const supabase = createAdminClient();
+  const { data, error } = await supabase.from(TABLE).select("id, data");
+  if (error || !data) return {};
+  const out: Record<string, Partial<Product>> = {};
+  for (const row of data) {
+    out[row.id as string] = row.data as Partial<Product>;
   }
-}
-
-function writeOverrides(data: Record<string, Partial<Product>>) {
-  writeFileSync(OVERRIDES_PATH, JSON.stringify(data, null, 2), "utf-8");
+  return out;
 }
 
 // GET /api/admin/products — list all with overrides merged
@@ -24,12 +22,20 @@ export async function GET() {
   try {
     const base = (await import("@/data/products.json")).default as Product[];
     const hd = (await import("@/data/products-hd.json")).default as Product[];
-    const overrides = readOverrides();
+    const overrides = await readOverrides();
 
     const all = [...hd, ...base.filter((p) => (p.category as string) !== "coquetas")];
+    const overrideIds = new Set(Object.keys(overrides));
     const merged = all.map((p) => ({ ...p, ...(overrides[p.id] ?? {}) }));
 
-    return NextResponse.json(merged);
+    // Custom products (only in overrides, not in JSON files)
+    const customs: Partial<Product>[] = [];
+    const baseIds = new Set(all.map((p) => p.id));
+    for (const id of overrideIds) {
+      if (!baseIds.has(id)) customs.push(overrides[id]);
+    }
+
+    return NextResponse.json([...merged, ...customs]);
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 });
   }
@@ -37,12 +43,14 @@ export async function GET() {
 
 // POST /api/admin/products — create new product
 export async function POST(request: Request) {
+  if (!isAdminConfigured()) {
+    return NextResponse.json({ error: "Supabase no configurado" }, { status: 500 });
+  }
   try {
     const body = await request.json();
-    const overrides = readOverrides();
-
     const id = body.id || `custom-${Date.now()}`;
     const slug = body.slug || id;
+
     const newProduct: Partial<Product> = {
       id,
       slug,
@@ -61,8 +69,13 @@ export async function POST(request: Request) {
       fabricOptions: body.fabricOptions ?? [],
     };
 
-    overrides[id] = newProduct;
-    writeOverrides(overrides);
+    const supabase = createAdminClient();
+    const { error } = await supabase
+      .from(TABLE)
+      .upsert({ id, data: newProduct }, { onConflict: "id" });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
     return NextResponse.json(newProduct, { status: 201 });
   } catch (e) {
@@ -72,14 +85,28 @@ export async function POST(request: Request) {
 
 // PATCH /api/admin/products — update product by id
 export async function PATCH(request: Request) {
+  if (!isAdminConfigured()) {
+    return NextResponse.json({ error: "Supabase no configurado" }, { status: 500 });
+  }
   try {
     const body = await request.json();
     const { id, ...updates } = body;
     if (!id) return NextResponse.json({ error: "id requerido" }, { status: 400 });
 
-    const overrides = readOverrides();
-    overrides[id] = { ...(overrides[id] ?? {}), ...updates };
-    writeOverrides(overrides);
+    const supabase = createAdminClient();
+    const { data: existing } = await supabase
+      .from(TABLE)
+      .select("data")
+      .eq("id", id)
+      .maybeSingle();
+
+    const merged = { ...((existing?.data as Partial<Product>) ?? {}), ...updates };
+    const { error } = await supabase
+      .from(TABLE)
+      .upsert({ id, data: merged }, { onConflict: "id" });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
     return NextResponse.json({ ok: true, id });
   } catch (e) {
@@ -89,14 +116,31 @@ export async function PATCH(request: Request) {
 
 // DELETE /api/admin/products?id=xxx — hide product
 export async function DELETE(request: Request) {
+  if (!isAdminConfigured()) {
+    return NextResponse.json({ error: "Supabase no configurado" }, { status: 500 });
+  }
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     if (!id) return NextResponse.json({ error: "id requerido" }, { status: 400 });
 
-    const overrides = readOverrides();
-    overrides[id] = { ...(overrides[id] ?? {}), visible: false };
-    writeOverrides(overrides);
+    const supabase = createAdminClient();
+    const { data: existing } = await supabase
+      .from(TABLE)
+      .select("data")
+      .eq("id", id)
+      .maybeSingle();
+
+    const merged = {
+      ...((existing?.data as Partial<Product>) ?? {}),
+      visible: false,
+    };
+    const { error } = await supabase
+      .from(TABLE)
+      .upsert({ id, data: merged }, { onConflict: "id" });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (e) {

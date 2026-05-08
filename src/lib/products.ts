@@ -1,6 +1,4 @@
-import productsData from "@/data/products.json";
 import hdProductsData from "@/data/products-hd.json";
-import { createClient } from "@/lib/supabase";
 import type { CategoryId } from "@/lib/data";
 
 export interface Product {
@@ -55,32 +53,43 @@ export function getLocalProducts(): Product[] {
   return (hdProductsData as Record<string, unknown>[]).map(normalizeProduct);
 }
 
-export async function getProducts(): Promise<Product[]> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    return getLocalProducts();
+async function readOverrides(): Promise<Record<string, Partial<Product>>> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return {};
   }
   try {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .eq("visible", true)
-      .order("is_best_seller", { ascending: false })
-      .order("category");
-    if (error || !data || data.length === 0) {
-      return getLocalProducts();
+    const { createAdminClient } = await import("@/lib/supabase-admin");
+    const supabase = createAdminClient();
+    const { data, error } = await supabase.from("product_overrides").select("id, data");
+    if (error || !data) return {};
+    const out: Record<string, Partial<Product>> = {};
+    for (const row of data) {
+      out[row.id as string] = row.data as Partial<Product>;
     }
-    return data.map((p) => ({
-      ...p,
-      isBestSeller: p.is_best_seller ?? false,
-      regularPrice: p.regular_price ?? null,
-      deliveryDays: p.delivery_days ?? null,
-      fabricOptions: p.fabric_options ?? [],
-      visible: p.visible ?? true,
-    })) as Product[];
+    return out;
   } catch {
-    return getLocalProducts();
+    return {};
   }
+}
+
+export async function getProducts(): Promise<Product[]> {
+  const base = getLocalProducts();
+  const overrides = await readOverrides();
+
+  if (Object.keys(overrides).length === 0) return base.filter((p) => p.visible !== false);
+
+  // Aplicar overrides sobre base
+  const merged = base.map((p) => normalizeProduct({ ...p, ...overrides[p.id] }));
+
+  // Agregar custom products (sólo en overrides, no en JSON base)
+  const baseIds = new Set(base.map((p) => p.id));
+  const customs = Object.entries(overrides)
+    .filter(([id]) => !baseIds.has(id))
+    .map(([, data]) => data as Record<string, unknown>)
+    .filter((d) => d.id && d.name && d.image)
+    .map(normalizeProduct);
+
+  return [...merged, ...customs].filter((p) => p.visible !== false);
 }
 
 export async function getProductsByCategory(category: CategoryId): Promise<Product[]> {
@@ -118,3 +127,4 @@ export function formatPrice(price: number): string {
     maximumFractionDigits: 0,
   }).format(price);
 }
+

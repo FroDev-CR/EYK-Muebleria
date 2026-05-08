@@ -1,8 +1,17 @@
 import { NextResponse } from "next/server";
-import { writeFileSync, mkdirSync } from "fs";
-import { join, extname } from "path";
+import { extname } from "path";
+import { createAdminClient, isAdminConfigured } from "@/lib/supabase-admin";
+
+const BUCKET = "productos";
 
 export async function POST(request: Request) {
+  if (!isAdminConfigured()) {
+    return NextResponse.json(
+      { error: "Supabase no configurado en el servidor" },
+      { status: 500 },
+    );
+  }
+
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
@@ -21,16 +30,29 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Archivo mayor a 10 MB" }, { status: 400 });
     }
 
-    const ext = extname(file.name) || ".jpg";
-    const filename = `${Date.now()}${ext}`;
-    const dir = join(process.cwd(), "public", "productos", category);
-    mkdirSync(dir, { recursive: true });
+    const ext = (extname(file.name) || ".jpg").toLowerCase();
+    const safeCategory = category.replace(/[^a-z0-9-]/gi, "");
+    const path = `${safeCategory}/${Date.now()}${ext}`;
 
+    const supabase = createAdminClient();
     const buffer = Buffer.from(await file.arrayBuffer());
-    writeFileSync(join(dir, filename), buffer);
 
-    const url = `/productos/${category}/${filename}`;
-    return NextResponse.json({ url }, { status: 201 });
+    const { error: uploadError } = await supabase.storage
+      .from(BUCKET)
+      .upload(path, buffer, {
+        contentType: file.type,
+        upsert: false,
+      });
+
+    if (uploadError) {
+      return NextResponse.json(
+        { error: `Storage: ${uploadError.message}` },
+        { status: 500 },
+      );
+    }
+
+    const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(path);
+    return NextResponse.json({ url: pub.publicUrl }, { status: 201 });
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 });
   }

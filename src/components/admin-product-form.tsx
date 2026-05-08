@@ -172,7 +172,7 @@ export function AdminProductForm({ product, mode }: Props) {
             <input
               type="number"
               min="0"
-              step="500"
+              step="1"
               value={form.price}
               onChange={(e) => set("price", e.target.value)}
               className="input-admin"
@@ -185,7 +185,7 @@ export function AdminProductForm({ product, mode }: Props) {
             <input
               type="number"
               min="0"
-              step="500"
+              step="1"
               value={form.regularPrice}
               onChange={(e) => set("regularPrice", e.target.value)}
               className="input-admin"

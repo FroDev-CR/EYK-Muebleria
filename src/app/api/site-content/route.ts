@@ -1,14 +1,19 @@
 import { NextResponse } from "next/server";
-import { readFileSync, existsSync } from "fs";
-import { join } from "path";
-
-const CONTENT_PATH = join(process.cwd(), "src", "data", "site-content.json");
+import { createAdminClient, isAdminConfigured } from "@/lib/supabase-admin";
 
 export async function GET() {
+  if (!isAdminConfigured()) return NextResponse.json({});
   try {
-    if (!existsSync(CONTENT_PATH)) return NextResponse.json({});
-    const data = JSON.parse(readFileSync(CONTENT_PATH, "utf-8"));
-    return NextResponse.json(data);
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("site_content")
+      .select("key, value");
+    if (error) return NextResponse.json({});
+    const out: Record<string, string> = {};
+    for (const row of data ?? []) {
+      out[row.key as string] = row.value as string;
+    }
+    return NextResponse.json(out);
   } catch {
     return NextResponse.json({});
   }

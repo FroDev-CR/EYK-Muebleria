@@ -50,7 +50,7 @@ export function LangProvider({
     }
 
     // Load site content overrides
-    fetch("/api/site-content")
+    fetch("/api/site-content", { cache: "no-store" })
       .then((r) => r.json())
       .then((data: Record<string, string>) => setContentOverrides(data))
       .catch(() => {});

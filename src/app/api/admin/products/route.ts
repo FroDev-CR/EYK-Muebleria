@@ -3,6 +3,9 @@ import type { Product } from "@/lib/products";
 import type { CategoryId } from "@/lib/data";
 import { createAdminClient, isAdminConfigured } from "@/lib/supabase-admin";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const TABLE = "product_overrides";
 
 async function readOverrides(): Promise<Record<string, Partial<Product>>> {

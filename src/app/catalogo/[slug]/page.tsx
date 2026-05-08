@@ -6,6 +6,8 @@ import { CATEGORIES, getCategory, whatsappLink } from "@/lib/data";
 import { ProductCard } from "@/components/product-card";
 import productsJson from "@/data/products.json";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const list = productsJson as Product[];
   return list.map((p) => ({ slug: p.slug }));

@@ -4,6 +4,8 @@ import { CatalogContent } from "@/components/catalog-content";
 import { CATEGORIES, CATEGORY_GROUPS, type CategoryGroup } from "@/lib/data";
 import { getProducts } from "@/lib/products";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Catálogo",
   description:

@@ -2,6 +2,8 @@ import { CATEGORY_GROUPS, CATEGORIES } from "@/lib/data";
 import { getProducts, getBestSellers } from "@/lib/products";
 import { HomeContent } from "@/components/home-content";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const [all, bestSellers] = await Promise.all([getProducts(), getBestSellers()]);
 

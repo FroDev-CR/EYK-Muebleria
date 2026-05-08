@@ -23,7 +23,7 @@ interface Props {
 }
 
 export function HomeContent({ bestSellers, previewByGroup }: Props) {
-  const { lang } = useLang();
+  const { lang, t } = useLang();
   const h = translations.home;
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -73,16 +73,16 @@ export function HomeContent({ bestSellers, previewByGroup }: Props) {
             <div className="min-w-0 md:col-span-7 animate-fade-rise">
               <p className="eyebrow flex items-center gap-3">
                 <span aria-hidden className="inline-block w-8 h-px bg-[#FB531F]" />
-                {h.eyebrow[lang]}
+                {t("home", "eyebrow")}
               </p>
               <h1 className="mt-6 font-[family-name:var(--font-display)] text-[clamp(1.75rem,8vw,2.5rem)] sm:text-[clamp(2rem,7vw,3rem)] md:text-[clamp(2.75rem,7.5vw,6rem)] leading-[1.05] md:leading-[0.98] tracking-[-0.025em] text-[#111]">
-                {h.hero_h1a[lang]}
+                {t("home", "hero_h1a")}
                 <br />
-                <span className="display-italic text-[#FB531F]">{h.hero_h1b[lang]}</span>
+                <span className="display-italic text-[#FB531F]">{t("home", "hero_h1b")}</span>
                 <span className="text-[#FB531F]">.</span>
               </h1>
               <p className="mt-7 max-w-xl text-[1.0625rem] leading-relaxed text-[#444]">
-                {h.hero_sub[lang]}
+                {t("home", "hero_sub")}
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-3">
                 <Link href="/catalogo" className="btn-primary">
@@ -100,7 +100,7 @@ export function HomeContent({ bestSellers, previewByGroup }: Props) {
                   <Reveal delay={200}>
                     <p className="eyebrow flex items-center gap-2 mb-4">
                       <span className="inline-block w-2 h-2 rounded-full bg-[#FB531F]" />
-                      {h.bs_eyebrow[lang]}
+                      {t("home", "bs_eyebrow")}
                     </p>
                   </Reveal>
                   <div
@@ -162,13 +162,13 @@ export function HomeContent({ bestSellers, previewByGroup }: Props) {
                 {h.process_eyebrow[lang]}
               </p>
               <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.015em]">
-                {h.process_h2a[lang]}{" "}
-                <span className="display-italic text-[#FB531F]">{h.process_h2b[lang]}</span>.
+                {t("home", "process_h2a")}{" "}
+                <span className="display-italic text-[#FB531F]">{t("home", "process_h2b")}</span>.
               </h2>
               <p className="mt-6 text-[1.0625rem] leading-relaxed text-white/70 max-w-md">
-                {h.process_sub[lang]}
+                {t("home", "process_sub")}
               </p>
-              <p className="mt-3 text-sm text-white/40">{h.process_note[lang]}</p>
+              <p className="mt-3 text-sm text-white/40">{t("home", "process_note")}</p>
               <div className="mt-8 flex gap-3 flex-wrap">
                 <Link href="/a-la-medida" className="btn-primary">
                   {h.process_cta1[lang]}
@@ -212,8 +212,8 @@ export function HomeContent({ bestSellers, previewByGroup }: Props) {
               <div>
                 <p className="eyebrow">{h.cat_eyebrow[lang]}</p>
                 <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2rem,4.5vw,3.25rem)] leading-tight tracking-[-0.015em] max-w-xl">
-                  {h.cat_h2a[lang]}{" "}
-                  <span className="display-italic">{h.cat_h2b[lang]}</span>
+                  {t("home", "cat_h2a")}{" "}
+                  <span className="display-italic">{t("home", "cat_h2b")}</span>
                 </h2>
               </div>
               <Link

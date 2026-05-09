@@ -2,7 +2,6 @@
 
 import { Reveal } from "@/components/reveal";
 import { useLang } from "@/contexts/lang-context";
-import { whatsappLink } from "@/lib/data";
 
 const reviews = [
   {
@@ -52,7 +51,7 @@ function Stars({ n }: { n: number }) {
 }
 
 export default function EntregasPage() {
-  const { t } = useLang();
+  const { t, whatsappLink } = useLang();
 
   return (
     <>

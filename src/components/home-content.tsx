@@ -11,7 +11,6 @@ import { StatCounter } from "@/components/stat-counter";
 import { HeroSpotlight } from "@/components/hero-spotlight";
 import { useLang } from "@/contexts/lang-context";
 import { translations } from "@/lib/translations";
-import { whatsappLink } from "@/lib/data";
 
 interface Props {
   bestSellers: Product[];
@@ -23,7 +22,7 @@ interface Props {
 }
 
 export function HomeContent({ bestSellers, previewByGroup }: Props) {
-  const { lang, t } = useLang();
+  const { lang, t, whatsappLink } = useLang();
   const h = translations.home;
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -162,8 +161,10 @@ export function HomeContent({ bestSellers, previewByGroup }: Props) {
                 {h.process_eyebrow[lang]}
               </p>
               <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.015em]">
-                {t("home", "process_h2a")}{" "}
-                <span className="display-italic text-[#FB531F]">{t("home", "process_h2b")}</span>.
+                {t("home", "process_h2a")}
+                <br />
+                <span className="display-italic text-[#FB531F]">{t("home", "process_h2b")}</span>
+                <span className="text-[#FB531F]">.</span>
               </h2>
               <p className="mt-6 text-[1.0625rem] leading-relaxed text-white/70 max-w-md">
                 {t("home", "process_sub")}

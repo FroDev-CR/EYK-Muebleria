@@ -53,6 +53,15 @@ const SECTIONS = [
     ],
   },
   {
+    title: "Información de contacto",
+    fields: [
+      { key: "contact.whatsapp_value", label: "WhatsApp (solo dígitos, ej. 50688887777)", placeholder: "50688887777" },
+      { key: "contact.phone_value", label: "Teléfono visible (formato libre)", placeholder: "+506 8888 7777" },
+      { key: "contact.email_value", label: "Correo electrónico", placeholder: "ventas@eykmuebleria.com" },
+      { key: "contact.instagram_value", label: "Usuario Instagram (sin @)", placeholder: "eykmuebleria" },
+    ],
+  },
+  {
     title: "Entregas",
     fields: [
       { key: "deliveries.h1a", label: "Título línea 1", placeholder: "Muebles" },

@@ -3,6 +3,21 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { Lang, Translations } from "@/lib/translations";
 import { translations, t as translate } from "@/lib/translations";
+import { CONTACT } from "@/lib/data";
+
+export interface FaqItem {
+  es: string;
+  en: string;
+  es_a: string;
+  en_a: string;
+}
+
+export interface ContactInfo {
+  whatsapp: string;
+  phone: string;
+  email: string;
+  instagram: string;
+}
 
 interface LangContextValue {
   lang: Lang;
@@ -15,7 +30,19 @@ interface LangContextValue {
   setDarkMode: (dark: boolean) => void;
   contentOverrides: Record<string, string>;
   setContentOverrides: (overrides: Record<string, string>) => void;
+  contact: ContactInfo;
+  whatsappLink: (message: string) => string;
+  faq: FaqItem[];
 }
+
+const defaultContact: ContactInfo = {
+  whatsapp: CONTACT.whatsapp,
+  phone: CONTACT.phone,
+  email: CONTACT.email,
+  instagram: CONTACT.instagram,
+};
+
+const defaultFaq = translations.contact.faq as unknown as FaqItem[];
 
 const LangContext = createContext<LangContextValue>({
   lang: "es",
@@ -25,6 +52,10 @@ const LangContext = createContext<LangContextValue>({
   setDarkMode: () => {},
   contentOverrides: {},
   setContentOverrides: () => {},
+  contact: defaultContact,
+  whatsappLink: (m: string) =>
+    `https://wa.me/${defaultContact.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(m)}`,
+  faq: defaultFaq,
 });
 
 export function LangProvider({
@@ -92,8 +123,44 @@ export function LangProvider({
     return translate(section, key, lang);
   };
 
+  const contact: ContactInfo = {
+    whatsapp: contentOverrides["contact.whatsapp_value"] || CONTACT.whatsapp,
+    phone: contentOverrides["contact.phone_value"] || CONTACT.phone,
+    email: contentOverrides["contact.email_value"] || CONTACT.email,
+    instagram: contentOverrides["contact.instagram_value"] || CONTACT.instagram,
+  };
+
+  const whatsappLink = (message: string): string => {
+    const w = contact.whatsapp.replace(/\D/g, "");
+    return `https://wa.me/${w}?text=${encodeURIComponent(message)}`;
+  };
+
+  let faq: FaqItem[] = defaultFaq;
+  const faqRaw = contentOverrides["contact.faq_json"];
+  if (faqRaw) {
+    try {
+      const parsed = JSON.parse(faqRaw);
+      if (Array.isArray(parsed)) faq = parsed as FaqItem[];
+    } catch {
+      // ignore malformed override
+    }
+  }
+
   return (
-    <LangContext.Provider value={{ lang, setLang, t, darkMode, setDarkMode, contentOverrides, setContentOverrides }}>
+    <LangContext.Provider
+      value={{
+        lang,
+        setLang,
+        t,
+        darkMode,
+        setDarkMode,
+        contentOverrides,
+        setContentOverrides,
+        contact,
+        whatsappLink,
+        faq,
+      }}
+    >
       {children}
     </LangContext.Provider>
   );

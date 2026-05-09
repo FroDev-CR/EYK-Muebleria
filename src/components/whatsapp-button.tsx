@@ -1,9 +1,10 @@
 "use client";
 
-import { CONTACT, whatsappLink } from "@/lib/data";
 import { useEffect, useState } from "react";
+import { useLang } from "@/contexts/lang-context";
 
 export function WhatsAppFloat() {
+  const { contact, whatsappLink } = useLang();
   const [show, setShow] = useState(false);
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > 400);
@@ -17,7 +18,7 @@ export function WhatsAppFloat() {
       href={whatsappLink("Hola, vengo del sitio web. Me interesa cotizar un mueble.")}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Contactar por WhatsApp al ${CONTACT.phone}`}
+      aria-label={`Contactar por WhatsApp al ${contact.phone}`}
       className={`fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[oklch(0.55_0.16_145)] text-white shadow-[0_8px_30px_-8px_oklch(0.55_0.16_145/0.55)] transition-all duration-300 ${
         show ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0 pointer-events-none"
       }`}

@@ -57,6 +57,15 @@ const CONTENT_SECTIONS = [
     ],
   },
   {
+    title: "Información de contacto",
+    fields: [
+      { key: "contact.whatsapp_value", label: "WhatsApp (solo dígitos, ej. 50688887777)", placeholder: "50688887777" },
+      { key: "contact.phone_value", label: "Teléfono visible (formato libre)", placeholder: "+506 8888 7777" },
+      { key: "contact.email_value", label: "Correo electrónico", placeholder: "ventas@eykmuebleria.com" },
+      { key: "contact.instagram_value", label: "Usuario Instagram (sin @)", placeholder: "eykmuebleria" },
+    ],
+  },
+  {
     title: "Entregas",
     fields: [
       { key: "deliveries.h1a", label: "Título línea 1", placeholder: "Muebles" },
@@ -84,6 +93,20 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 
+interface FaqItem {
+  es: string;
+  en: string;
+  es_a: string;
+  en_a: string;
+}
+
+const DEFAULT_FAQ: FaqItem[] = [
+  { es: "¿Cuánto tarda un pedido?", en: "How long does an order take?", es_a: "Entre 2 y 4 semanas según el diseño y la complejidad.", en_a: "2 to 4 weeks depending on design and complexity." },
+  { es: "¿Hacen entregas a todo el país?", en: "Do you deliver nationwide?", es_a: "Sí. La logística se cotiza aparte según la zona.", en_a: "Yes. Shipping costs vary by region." },
+  { es: "¿Puedo llevar mi propio diseño?", en: "Can I bring my own design?", es_a: "Claro. Cualquier diseño de referencia se puede cotizar.", en_a: "Of course. Any reference design can be quoted." },
+  { es: "¿Manejan adelantos?", en: "Do you require a deposit?", es_a: "Sí, normalmente trabajamos con un 50% de adelanto.", en_a: "Yes, we typically work with a 50% deposit." },
+];
+
 export default function ProductosAdminPage() {
   const [tab, setTab] = useState<"productos" | "contenido">("productos");
 
@@ -96,6 +119,8 @@ export default function ProductosAdminPage() {
 
   // ── Content state ──
   const [contentValues, setContentValues] = useState<Record<string, string>>({});
+  const [faqItems, setFaqItems] = useState<FaqItem[]>(DEFAULT_FAQ);
+  const [faqOverridden, setFaqOverridden] = useState(false);
   const [contentLoading, setContentLoading] = useState(true);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
 
@@ -107,7 +132,22 @@ export default function ProductosAdminPage() {
 
     fetch("/api/admin/content")
       .then((r) => r.json())
-      .then((data: Record<string, string>) => { setContentValues(data); setContentLoading(false); })
+      .then((data: Record<string, string>) => {
+        setContentValues(data);
+        const raw = data["contact.faq_json"];
+        if (raw) {
+          try {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              setFaqItems(parsed as FaqItem[]);
+              setFaqOverridden(true);
+            }
+          } catch {
+            // keep default
+          }
+        }
+        setContentLoading(false);
+      })
       .catch(() => setContentLoading(false));
   }, []);
 
@@ -151,15 +191,61 @@ export default function ProductosAdminPage() {
     setSaveStatus("idle");
   }
 
+  function updateFaqField(idx: number, field: keyof FaqItem, value: string) {
+    setFaqItems((prev) => prev.map((it, i) => (i === idx ? { ...it, [field]: value } : it)));
+    setFaqOverridden(true);
+    setSaveStatus("idle");
+  }
+
+  function addFaqItem() {
+    setFaqItems((prev) => [...prev, { es: "", en: "", es_a: "", en_a: "" }]);
+    setFaqOverridden(true);
+    setSaveStatus("idle");
+  }
+
+  function removeFaqItem(idx: number) {
+    setFaqItems((prev) => prev.filter((_, i) => i !== idx));
+    setFaqOverridden(true);
+    setSaveStatus("idle");
+  }
+
+  function moveFaqItem(idx: number, dir: -1 | 1) {
+    setFaqItems((prev) => {
+      const next = [...prev];
+      const target = idx + dir;
+      if (target < 0 || target >= next.length) return prev;
+      [next[idx], next[target]] = [next[target], next[idx]];
+      return next;
+    });
+    setFaqOverridden(true);
+    setSaveStatus("idle");
+  }
+
+  function resetFaqDefault() {
+    setFaqItems(DEFAULT_FAQ);
+    setFaqOverridden(false);
+    setSaveStatus("idle");
+  }
+
   async function handleContentSave() {
     setSaveStatus("saving");
     try {
+      const payload: Record<string, string> = { ...contentValues };
+      if (faqOverridden) {
+        const cleaned = faqItems.filter(
+          (it) => it.es.trim() || it.en.trim() || it.es_a.trim() || it.en_a.trim(),
+        );
+        payload["contact.faq_json"] = JSON.stringify(cleaned);
+      } else {
+        payload["contact.faq_json"] = "";
+      }
       const res = await fetch("/api/admin/content", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(contentValues),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error();
+      setContentValues(payload);
       setSaveStatus("saved");
       setTimeout(() => setSaveStatus("idle"), 3000);
     } catch {
@@ -392,6 +478,121 @@ export default function ProductosAdminPage() {
                   </div>
                 </div>
               ))}
+
+              {/* FAQ editor */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-[0.7rem] font-bold tracking-[0.18em] uppercase text-[#FB531F]">
+                    Preguntas frecuentes
+                    {faqOverridden && (
+                      <span className="ml-2 px-1.5 py-0.5 bg-[#FB531F]/10 text-[#FB531F] text-[0.65rem] rounded font-normal normal-case tracking-normal">
+                        personalizado
+                      </span>
+                    )}
+                  </h2>
+                  {faqOverridden && (
+                    <button
+                      onClick={resetFaqDefault}
+                      className="text-[0.7rem] text-[#999] hover:text-red-500 transition"
+                    >
+                      Restaurar defecto
+                    </button>
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  {faqItems.map((item, i) => (
+                    <div key={i} className="bg-white border border-[#e5e5e5] rounded-lg p-5">
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-xs font-semibold text-[#666]">Pregunta #{i + 1}</p>
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => moveFaqItem(i, -1)}
+                            disabled={i === 0}
+                            className="px-2 py-1 text-xs text-[#666] hover:bg-[#f1f1f1] rounded disabled:opacity-30 disabled:cursor-not-allowed transition"
+                            title="Subir"
+                          >
+                            ↑
+                          </button>
+                          <button
+                            onClick={() => moveFaqItem(i, 1)}
+                            disabled={i === faqItems.length - 1}
+                            className="px-2 py-1 text-xs text-[#666] hover:bg-[#f1f1f1] rounded disabled:opacity-30 disabled:cursor-not-allowed transition"
+                            title="Bajar"
+                          >
+                            ↓
+                          </button>
+                          <button
+                            onClick={() => removeFaqItem(i)}
+                            className="px-2 py-1 text-xs text-red-500 hover:bg-red-50 rounded transition"
+                            title="Eliminar"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs font-medium text-[#444] block mb-1">
+                            Pregunta (ES)
+                          </label>
+                          <input
+                            type="text"
+                            value={item.es}
+                            onChange={(e) => updateFaqField(i, "es", e.target.value)}
+                            placeholder="¿Cuánto tarda un pedido?"
+                            className="w-full border border-[#e5e5e5] rounded px-3 py-2 text-sm text-[#111] placeholder:text-[#bbb] focus:outline-none focus:border-[#FB531F]"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-[#444] block mb-1">
+                            Pregunta (EN)
+                          </label>
+                          <input
+                            type="text"
+                            value={item.en}
+                            onChange={(e) => updateFaqField(i, "en", e.target.value)}
+                            placeholder="How long does an order take?"
+                            className="w-full border border-[#e5e5e5] rounded px-3 py-2 text-sm text-[#111] placeholder:text-[#bbb] focus:outline-none focus:border-[#FB531F]"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-[#444] block mb-1">
+                            Respuesta (ES)
+                          </label>
+                          <textarea
+                            rows={2}
+                            value={item.es_a}
+                            onChange={(e) => updateFaqField(i, "es_a", e.target.value)}
+                            placeholder="Entre 2 y 4 semanas..."
+                            className="w-full border border-[#e5e5e5] rounded px-3 py-2 text-sm text-[#111] placeholder:text-[#bbb] focus:outline-none focus:border-[#FB531F] resize-y"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-[#444] block mb-1">
+                            Respuesta (EN)
+                          </label>
+                          <textarea
+                            rows={2}
+                            value={item.en_a}
+                            onChange={(e) => updateFaqField(i, "en_a", e.target.value)}
+                            placeholder="2 to 4 weeks..."
+                            className="w-full border border-[#e5e5e5] rounded px-3 py-2 text-sm text-[#111] placeholder:text-[#bbb] focus:outline-none focus:border-[#FB531F] resize-y"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  <button
+                    onClick={addFaqItem}
+                    className="w-full border-2 border-dashed border-[#e5e5e5] hover:border-[#FB531F] hover:text-[#FB531F] rounded-lg py-3 text-sm font-semibold text-[#999] transition"
+                  >
+                    + Agregar pregunta
+                  </button>
+                </div>
+              </div>
 
               <div className="pt-4 flex justify-end">
                 <button

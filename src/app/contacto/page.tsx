@@ -1,12 +1,9 @@
 "use client";
 
 import { useLang } from "@/contexts/lang-context";
-import { CONTACT, whatsappLink } from "@/lib/data";
-import { translations } from "@/lib/translations";
 
 export default function ContactoPage() {
-  const { lang, t } = useLang();
-  const faqItems = translations.contact.faq;
+  const { lang, t, contact, whatsappLink, faq: faqItems } = useLang();
 
   return (
     <section className="container-edge pt-12 md:pt-20 pb-24">
@@ -30,7 +27,7 @@ export default function ContactoPage() {
               <div>
                 <p className="eyebrow">{t("contact", "whatsapp")}</p>
                 <p className="mt-2 font-[family-name:var(--font-display)] text-2xl text-[var(--color-ink)]">
-                  {CONTACT.phone}
+                  {contact.phone}
                 </p>
                 <p className="mt-1 text-sm text-[var(--color-ink-muted)]">
                   {t("contact", "whatsapp_sub")}
@@ -41,13 +38,13 @@ export default function ContactoPage() {
               </span>
             </a>
             <a
-              href={`mailto:${CONTACT.email}`}
+              href={`mailto:${contact.email}`}
               className="bg-[var(--color-bone)] hover:bg-[var(--color-bone-2)] p-6 md:p-8 grid grid-cols-[1fr_auto] gap-4 items-baseline transition-colors"
             >
               <div>
                 <p className="eyebrow">{t("contact", "email")}</p>
                 <p className="mt-2 font-[family-name:var(--font-display)] text-2xl text-[var(--color-ink)]">
-                  {CONTACT.email}
+                  {contact.email}
                 </p>
                 <p className="mt-1 text-sm text-[var(--color-ink-muted)]">{t("contact", "email_sub")}</p>
               </div>
@@ -56,7 +53,7 @@ export default function ContactoPage() {
               </span>
             </a>
             <a
-              href={`https://instagram.com/${CONTACT.instagram}`}
+              href={`https://instagram.com/${contact.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[var(--color-bone)] hover:bg-[var(--color-bone-2)] p-6 md:p-8 grid grid-cols-[1fr_auto] gap-4 items-baseline transition-colors"
@@ -64,7 +61,7 @@ export default function ContactoPage() {
               <div>
                 <p className="eyebrow">{t("contact", "instagram")}</p>
                 <p className="mt-2 font-[family-name:var(--font-display)] text-2xl text-[var(--color-ink)]">
-                  @{CONTACT.instagram}
+                  @{contact.instagram}
                 </p>
                 <p className="mt-1 text-sm text-[var(--color-ink-muted)]">{t("contact", "insta_sub")}</p>
               </div>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { CATEGORY_GROUPS, whatsappLink } from "@/lib/data";
+import { CATEGORY_GROUPS } from "@/lib/data";
+import { useLang } from "@/contexts/lang-context";
 
 interface FormState {
   nombre: string;
@@ -30,6 +31,7 @@ const INITIAL: FormState = {
 };
 
 export function CustomOrderForm() {
+  const { whatsappLink } = useLang();
   const [data, setData] = useState<FormState>(INITIAL);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});

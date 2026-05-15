@@ -5,8 +5,18 @@ import { useLang } from "@/contexts/lang-context";
 import { translations } from "@/lib/translations";
 
 export default function ALaMedidaPage() {
-  const { lang, t } = useLang();
-  const steps = translations.custom.steps;
+  const { lang, t, contentOverrides } = useLang();
+  const baseSteps = translations.custom.steps;
+  const steps = baseSteps.map((s, i) => {
+    const idx = i + 1;
+    const tOv = contentOverrides[`custom.step${idx}_t`];
+    const bOv = contentOverrides[`custom.step${idx}_b`];
+    return {
+      ...s,
+      es: tOv || s.es,
+      es_b: bOv || s.es_b,
+    };
+  });
 
   return (
     <>

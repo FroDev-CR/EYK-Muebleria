@@ -22,8 +22,20 @@ interface Props {
 }
 
 export function HomeContent({ bestSellers, previewByGroup }: Props) {
-  const { lang, t, whatsappLink } = useLang();
+  const { lang, t, whatsappLink, contentOverrides } = useLang();
   const h = translations.home;
+
+  const stats = h.stats.map((s, i) => {
+    const idx = i + 1;
+    const numOv = contentOverrides[`home.stat${idx}_num`];
+    const sufOv = contentOverrides[`home.stat${idx}_suffix`];
+    const parsed = numOv ? parseInt(numOv, 10) : NaN;
+    return {
+      ...s,
+      num: Number.isFinite(parsed) ? parsed : s.num,
+      suffix: sufOv ?? s.suffix,
+    };
+  });
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const idxRef = useRef(0);
@@ -137,7 +149,7 @@ export function HomeContent({ bestSellers, previewByGroup }: Props) {
       {/* ── STATS ──────────────────────────────────────────────────────── */}
       <section className="container-edge py-20 md:py-24">
         <div className="grid gap-px bg-[#e5e5e5] border border-[#e5e5e5] sm:grid-cols-3">
-          {h.stats.map((s, i) => (
+          {stats.map((s, i) => (
             <Reveal key={i} delay={i * 120} className="bg-white">
               <div className="p-8 md:p-12">
                 <p className="font-[family-name:var(--font-display)] text-[clamp(3rem,7vw,5.5rem)] leading-none tracking-[-0.02em] text-[#111]">
@@ -160,7 +172,7 @@ export function HomeContent({ bestSellers, previewByGroup }: Props) {
               <p className="text-[0.75rem] font-bold tracking-[0.2em] uppercase text-[#FB531F]">
                 {h.process_eyebrow[lang]}
               </p>
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.015em]">
+              <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.015em] text-white">
                 {t("home", "process_h2a")}
                 <br />
                 <span className="display-italic text-[#FB531F]">{t("home", "process_h2b")}</span>

@@ -27,6 +27,17 @@ const CONTENT_SECTIONS = [
     ],
   },
   {
+    title: "Estadísticas (home)",
+    fields: [
+      { key: "home.stat1_num", label: "Stat 1 — número", placeholder: "280" },
+      { key: "home.stat1_suffix", label: "Stat 1 — sufijo (+, %, etc.)", placeholder: "+" },
+      { key: "home.stat2_num", label: "Stat 2 — número", placeholder: "100" },
+      { key: "home.stat2_suffix", label: "Stat 2 — sufijo", placeholder: "%" },
+      { key: "home.stat3_num", label: "Stat 3 — número", placeholder: "10" },
+      { key: "home.stat3_suffix", label: "Stat 3 — sufijo", placeholder: "+" },
+    ],
+  },
+  {
     title: "Proceso A la Medida",
     fields: [
       { key: "home.process_h2a", label: "Título línea 1", placeholder: "Si tenés una idea," },
@@ -71,6 +82,19 @@ const CONTENT_SECTIONS = [
       { key: "deliveries.h1a", label: "Título línea 1", placeholder: "Muebles" },
       { key: "deliveries.h1b", label: "Título línea 2 (itálica)", placeholder: "en su hogar" },
       { key: "deliveries.sub", label: "Subtítulo", placeholder: "Cada entrega es el resultado de semanas de fabricación artesanal.", multiline: true },
+    ],
+  },
+  {
+    title: "A la medida — Cómo funciona (pasos)",
+    fields: [
+      { key: "custom.step1_t", label: "Paso 1 — título", placeholder: "Llenas el formulario" },
+      { key: "custom.step1_b", label: "Paso 1 — descripción", placeholder: "Foto, medidas y detalles. No te preocupes si no sabes todo.", multiline: true },
+      { key: "custom.step2_t", label: "Paso 2 — título", placeholder: "Te contactamos" },
+      { key: "custom.step2_b", label: "Paso 2 — descripción", placeholder: "Por WhatsApp, generalmente el mismo día.", multiline: true },
+      { key: "custom.step3_t", label: "Paso 3 — título", placeholder: "Cotización formal" },
+      { key: "custom.step3_b", label: "Paso 3 — descripción", placeholder: "Te enviamos precio, materiales y tiempo de entrega.", multiline: true },
+      { key: "custom.step4_t", label: "Paso 4 — título", placeholder: "Fabricación" },
+      { key: "custom.step4_b", label: "Paso 4 — descripción", placeholder: "Empezamos con el 50% de adelanto. Entre 2 y 4 semanas.", multiline: true },
     ],
   },
 ];
